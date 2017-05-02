@@ -24,8 +24,10 @@
               </div>
             </li>
           </ul>
-          <loading v-show="!discList.length && !discList.length"></loading>
         </div>
+      </div>
+      <div class="loading-container" v-show="!discList.length && !discList.length">
+        <loading></loading>
       </div>
     </scroll>
     <router-view></router-view>
@@ -135,4 +137,9 @@
               color: $color-text
             .desc
               color: $color-text-d
+      .loading-container
+        position: absolute
+        width: 100%
+        top: 50%
+        transform: translateY(-50%)
 </style>
