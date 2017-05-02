@@ -38,9 +38,9 @@
     },
     mounted() {
       setTimeout(() => {
-        this._initSlider()
+        this._setSliderWidth()
         this._initDots()
-        this._initScroll()
+        this._initSlider()
 
         if (this.autoPlay) {
           this._play()
@@ -50,7 +50,7 @@
           if (!this.slider) {
             return
           }
-          this._initSlider(true)
+          this._setSliderWidth(true)
           this.slider.refresh()
           this.$emit('refresh')
         })
@@ -60,7 +60,7 @@
       clearTimeout(this.timer)
     },
     methods: {
-      _initSlider(isResize) {
+      _setSliderWidth(isResize) {
         this.children = this.$refs.sliderGroup.children
 
         let width = 0
@@ -77,7 +77,7 @@
         }
         this.$refs.sliderGroup.style.width = width + 'px'
       },
-      _initScroll() {
+      _initSlider() {
         this.slider = new BScroll(this.$refs.slider, {
           scrollX: true,
           scrollY: false,
