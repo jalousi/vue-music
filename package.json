@@ -16,7 +16,7 @@
     "vue-router": "^2.3.1",
     "fastclick": "^1.0.6",
     "vue-lazyload": "1.0.0-rc12",
-    "axios": "^0.15.3",
+    "axios": "^0.16.1",
     "jsonp": "0.2.1",
     "better-scroll": "^0.1.15"
   },
