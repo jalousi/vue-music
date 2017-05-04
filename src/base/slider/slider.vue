@@ -85,8 +85,7 @@
           snap: true,
           snapLoop: this.loop,
           snapThreshold: 0.3,
-          snapSpeed: 400,
-          click: true
+          snapSpeed: 400
         })
 
         this.slider.on('scrollEnd', () => {
