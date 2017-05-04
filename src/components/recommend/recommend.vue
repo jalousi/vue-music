@@ -3,7 +3,7 @@
     <scroll ref="scroll" class="recommend-content" :data="discList">
       <div>
         <div v-if="recommends.length" class="slider-wrapper" ref="sliderWrapper">
-          <slider @refresh="refresh">
+          <slider>
             <div v-for="item in recommends">
               <a :href="item.linkUrl">
                 <img class="needsclick" @load="loadImage" :src="item.picUrl">
@@ -16,7 +16,7 @@
           <ul>
             <li v-for="item in discList" class="item">
               <div class="icon">
-                <img width="60" height="60" :src="defaultImage" v-lazy="item.imgurl">
+                <img width="60" height="60"  v-lazy="item.imgurl">
               </div>
               <div class="text">
                 <h2 class="name" v-html="item.creator.name"></h2>
@@ -39,33 +39,26 @@
   import Loading from 'base/loading/loading'
   import Scroll from 'base/scroll/scroll'
   import {getRecommend, getDiscList} from 'api/recommend'
-  import {defaultImage} from 'common/js/config'
   import {ERR_OK} from 'api/config'
 
   export default {
     data() {
       return {
         recommends: [],
-        discList: [],
-        listStyle: ''
+        discList: []
       }
     },
     created() {
       this._getRecommend()
 
       this._getDiscList()
-
-      this.defaultImage = defaultImage
     },
     methods: {
       loadImage() {
         if (!this.checkloaded) {
           this.checkloaded = true
-          this.refresh()
+          this.$refs.scroll.refresh()
         }
-      },
-      refresh() {
-        this.$refs.scroll.refresh()
       },
       _getRecommend() {
         getRecommend().then((res) => {
@@ -78,9 +71,6 @@
         getDiscList().then((res) => {
           if (res.code === ERR_OK) {
             this.discList = res.data.list
-            setTimeout(() => {
-              this.$Lazyload.lazyLoadHandler()
-            }, 20)
           }
         })
       }

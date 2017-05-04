@@ -53,7 +53,6 @@
         }
         this._setSliderWidth(true)
         this.slider.refresh()
-        this.$emit('refresh')
       })
     },
     destroyed() {
