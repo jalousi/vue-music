@@ -20,7 +20,6 @@
       <ul>
         <li v-for="(item, index) in shortcutList" :data-index="index" class="item"
             :class="{'current':currentIndex===index}">{{item}}
-
         </li>
       </ul>
     </div>
@@ -40,8 +39,6 @@
 
   const TITLE_HEIGHT = 30
   const ANCHOR_HEIGHT = 18
-
-  const EVENT_SELECT = 'select'
 
   export default {
     props: {
@@ -63,8 +60,7 @@
     data() {
       return {
         scrollY: -1,
-        currentIndex: 0,
-        diff: -1
+        currentIndex: 0
       }
     },
     created() {
@@ -74,9 +70,6 @@
       this.listHeight = []
     },
     methods: {
-      selectItem(item) {
-        this.$emit(EVENT_SELECT, item)
-      },
       onShortcutTouchStart(e) {
         let anchorIndex = getData(e.target, 'index')
         let firstTouch = e.touches[0]
@@ -111,6 +104,14 @@
         }
       },
       _scrollTo(index) {
+        if (!index && index !== 0) {
+          return
+        }
+        if (index < 0) {
+          index = 0
+        } else if (index > this.listHeight.length - 2) {
+          index = this.listHeight.length - 2
+        }
         this.scrollY = -this.listHeight[index]
         this.$refs.listview.scrollToElement(this.$refs.listGroup[index], 0)
       }
@@ -121,18 +122,24 @@
           this._calculateHeight()
         }, 20)
       },
-      scrollY(newVal) {
+      scrollY(newY) {
         const listHeight = this.listHeight
-        for (let i = 0; i < listHeight.length; i++) {
+        // 当滚动到顶部，newY>0
+        if (newY > 0) {
+          this.currentIndex = 0
+          return
+        }
+        // 在中间部分滚动
+        for (let i = 0; i < listHeight.length - 1; i++) {
           let height1 = listHeight[i]
           let height2 = listHeight[i + 1]
-          if (!height2 || (-newVal >= height1 && -newVal < height2)) {
-            this.diff = height2 + newVal
+          if (-newY >= height1 && -newY < height2) {
             this.currentIndex = i
             return
           }
         }
-        this.currentIndex = 0
+        // 当滚动到底部，且-newY大于最后一个元素的上限
+        this.currentIndex = listHeight.length - 2
       },
       diff(newVal) {
         let fixedTop = (newVal > 0 && newVal < TITLE_HEIGHT) ? newVal - TITLE_HEIGHT : 0
