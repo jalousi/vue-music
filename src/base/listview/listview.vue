@@ -10,7 +10,7 @@
         <h2 class="list-group-title">{{group.title}}</h2>
         <uL>
           <li @click="selectItem(item)" v-for="item in group.items" class="list-group-item">
-            <img class="avatar"  v-lazy="item.avatar">
+            <img class="avatar" v-lazy="item.avatar">
             <span class="name">{{item.name}}</span>
           </li>
         </uL>
@@ -20,6 +20,7 @@
       <ul>
         <li v-for="(item, index) in shortcutList" :data-index="index" class="item"
             :class="{'current':currentIndex===index}">{{item}}
+
         </li>
       </ul>
     </div>
@@ -118,7 +119,6 @@
       data() {
         setTimeout(() => {
           this._calculateHeight()
-          this.$Lazyload.lazyLoadHandler()
         }, 20)
       },
       scrollY(newVal) {

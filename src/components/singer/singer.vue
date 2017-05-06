@@ -7,9 +7,9 @@
 <script type="text/ecmascript-6">
   import ListView from 'base/listview/listview'
   import {getSingerList} from 'api/singer'
+  import {ERR_OK} from 'api/config'
   import Singer from 'common/js/singer'
 
-  const ERR_OK = 0
   const HOT_SINGER_LEN = 10
   const HOT_NAME = '热门'
 
@@ -51,11 +51,10 @@
               items: []
             }
           }
-          map[key].items.push({
+          map[key].items.push(new Singer({
             name: item.Fsinger_name,
-            avatar: `http://y.gtimg.cn/music/photo_new/T001R300x300M000${item.Fsinger_mid}.jpg`,
             id: item.Fsinger_mid
-          })
+          }))
         })
         let ret = []
         let hot = []
