@@ -54,6 +54,9 @@
         })
       },
       fixedTitle() {
+        if (this.scrollY > 0) {
+          return ''
+        }
         return this.data[this.currentIndex] ? this.data[this.currentIndex].title : ''
       }
     },
