@@ -65,8 +65,8 @@
     },
     mounted() {
       this.imageHeight = this.$refs.bgImage.clientHeight
-      this.minTransalteY = -this.$refs.bgImage.clientHeight + RESERVED_HEIGHT
-      this.$refs.list.$el.style.top = `${this.$refs.bgImage.clientHeight}px`
+      this.minTransalteY = -this.imageHeight + RESERVED_HEIGHT
+      this.$refs.list.$el.style.top = `${this.imageHeight}px`
     },
     methods: {
       scroll(pos) {
