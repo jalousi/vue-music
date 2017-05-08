@@ -33,6 +33,8 @@
   import {prefixStyle} from 'common/js/dom'
 
   const RESERVED_HEIGHT = 40
+  const transform = prefixStyle('transform')
+  const backdrop = prefixStyle('backdrop-filter')
 
   export default {
     props: {
@@ -88,8 +90,7 @@
         } else {
           blur = Math.min(20, Math.abs(newVal / this.imageHeight) * 20)
         }
-        let transform = prefixStyle('transform')
-        let backdrop = prefixStyle('backdrop-filter')
+
         this.$refs.layer.style[transform] = `translate3d(0,${translateY}px,0)`
         this.$refs.filter.style[backdrop] = `blur(${blur}px)`
         if (newVal < this.minTransalteY) {
