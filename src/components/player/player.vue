@@ -8,7 +8,7 @@
     >
       <div class="normal-player" ref="normalPlayer" v-show="fullScreen">
         <div class="background">
-          <img width="100%" height="100%" v-lazy="currentSong.image">
+          <img width="100%" height="100%" :src="currentSong.image">
         </div>
         <div class="top">
           <div class="back" @click="back">
@@ -154,8 +154,7 @@
         'playlist',
         'currentIndex',
         'currentSong',
-        'mode',
-        'favoriteList'
+        'mode'
       ])
     },
     created() {
