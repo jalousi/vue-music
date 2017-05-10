@@ -47,9 +47,9 @@
             <span class="dot" :class="{'active':currentShow==='cd'}"></span>
             <span class="dot" :class="{'active':currentShow==='lyric'}"></span>
           </div>
-          <div class="process-wrapper">
+          <div class="progress-wrapper">
             <span class="time time-l">{{format(currentTime)}}</span>
-            <div class="process-bar-wrapper">
+            <div class="progress-bar-wrapper">
               <progress-bar @percentChange="onProgressBarChange" :percent="percent"></progress-bar>
             </div>
             <span class="time time-r">{{totalTime}}</span>
@@ -589,7 +589,7 @@
               width: 20px
               border-radius: 5px
               background: $color-text-ll
-        .process-wrapper
+        .progress-wrapper
           display: flex
           align-items: center
           width: 80%
@@ -605,7 +605,7 @@
               text-align: left
             &.time-r
               text-align: right
-          .process-bar-wrapper
+          .progress-bar-wrapper
             flex: 1
         .operators
           display: flex
