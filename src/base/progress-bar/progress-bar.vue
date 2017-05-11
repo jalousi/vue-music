@@ -27,7 +27,7 @@
     },
     watch: {
       percent(newVal) {
-        if (newVal > 0 && !this.touch.initiated) {
+        if (newVal >= 0 && !this.touch.initiated) {
           const barWidth = this.$refs.progressBar.clientWidth - progressBtnWidth
           const width = this.percent * barWidth
           this.$refs.progressBtn.style[transform] = `translate3d(${width}px,0,0)`

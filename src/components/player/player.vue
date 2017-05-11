@@ -106,7 +106,6 @@
   import ProgressCircle from 'base/progress-circle/progress-circle'
   import ProgressBar from 'base/progress-bar/progress-bar'
   import Lyric from 'lyric-parser'
-  import Song from 'common/js/song'
   import {playMode} from 'common/js/config'
   import {shuffle} from 'common/js/util'
 
@@ -235,7 +234,7 @@
       loop() {
         this.$refs.audio.currentTime = 0
         this.$refs.audio.play()
-        this.currentLyric && this.currentLyric.seek(this.$refs.audio.currentTime * 1000)
+        this.currentLyric && this.currentLyric.seek(0)
       },
       next() {
         if (!this.songReady) {
@@ -429,17 +428,17 @@
     },
     watch: {
       currentSong(newSong, oldSong) {
-        if (!(newSong instanceof Song) || newSong.id === oldSong.id) {
+        if (newSong.id === oldSong.id) {
           return
         }
-        setTimeout(() => {
+        clearTimeout(this.timer)
+        this.timer = setTimeout(() => {
           this.$refs.audio.play()
+          if (this.currentLyric) {
+            this.currentLyric.stop()
+          }
+          this.getLyric()
         }, 1000)
-        if (this.currentLyric) {
-          this.currentLyric.stop()
-        }
-        this.getLyric()
-        this.currentTime = 0
       },
       playing(isPlaying) {
         const audio = this.$refs.audio
