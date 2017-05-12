@@ -427,10 +427,7 @@
       })
     },
     watch: {
-      currentSong(newSong, oldSong) {
-        if (newSong.id === oldSong.id) {
-          return
-        }
+      currentSong() {
         clearTimeout(this.timer)
         this.timer = setTimeout(() => {
           this.$refs.audio.play()
@@ -440,10 +437,10 @@
           this.getLyric()
         }, 1000)
       },
-      playing(isPlaying) {
+      playing(newPlaying) {
         const audio = this.$refs.audio
         this.$nextTick(() => {
-          !isPlaying ? audio.pause() : audio.play()
+          newPlaying ? audio.play() : audio.pause()
         })
       }
     },
