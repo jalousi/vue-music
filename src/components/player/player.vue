@@ -100,7 +100,7 @@
 
 <script type="text/ecmascript-6">
   import {mapGetters, mapMutations} from 'vuex'
-  import {prefixStyle, eventType, TOUCH_EVENT} from 'common/js/dom'
+  import {prefixStyle} from 'common/js/dom'
   import animations from 'create-keyframe-animation'
   import Scroll from 'base/scroll/scroll'
   import ProgressCircle from 'base/progress-circle/progress-circle'
@@ -302,18 +302,12 @@
         })
       },
       middleTouchStart(e) {
-        let _eventType = eventType[e.type]
-        if (_eventType !== TOUCH_EVENT) {
-          if (e.button !== 0) {
-            return
-          }
-        }
-        this.touch.initiated = _eventType
+        this.touch.initiated = true
         this.touch.startX = e.touches[0].pageX
         this.touch.startY = e.touches[0].pageY
       },
       middleTouchMove(e) {
-        if (eventType[e.type] !== this.touch.initiated) {
+        if (!this.touch.initiated) {
           return
         }
         const deltaX = e.touches[0].pageX - this.touch.startX
