@@ -52,7 +52,7 @@
             <div class="progress-bar-wrapper">
               <progress-bar @percentChange="onProgressBarChange" :percent="percent"></progress-bar>
             </div>
-            <span class="time time-r">{{totalTime}}</span>
+            <span class="time time-r">{{format(currentSong.duration)}}</span>
           </div>
           <div class="operators">
             <div class="icon i-left" @click="changeMode">
@@ -133,9 +133,6 @@
       },
       miniIcon() {
         return this.playing ? 'icon-pause-mini' : 'icon-play-mini'
-      },
-      totalTime() {
-        return this.format(this.currentSong.duration)
       },
       disableCls() {
         return !this.songReady ? 'disable' : ''
