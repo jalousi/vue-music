@@ -284,11 +284,11 @@
         this.songReady = true
       },
       getLyric() {
-        this.currentSong.getLyric(this._handleLyric).then((lyric) => {
+        this.currentSong.getLyric(this.handleLyric).then((lyric) => {
           if (this.currentSong.lyric !== lyric) {
             return
           }
-          this.currentLyric = new Lyric(lyric, this._handleLyric)
+          this.currentLyric = new Lyric(lyric, this.handleLyric)
           this.$nextTick(() => {
             this.$refs.lyricList.refresh()
             if (this.playing) {
@@ -358,20 +358,20 @@
         this.setPlayMode(mode)
         let list = null
         if (mode === playMode.random) {
-          list = shuffle(this.sequenceList.slice())
+          list = shuffle(this.sequenceList)
         } else {
-          list = this.sequenceList.slice()
+          list = this.sequenceList
         }
-        this.resetCurrentIndex(list, this.currentSong)
+        this.resetCurrentIndex(list)
         this.setPlayList(list)
       },
-      resetCurrentIndex(list, song) {
+      resetCurrentIndex(list) {
         let findIndex = list.findIndex((item) => {
-          return item.id === song.id
+          return item.id === this.currentSong.id
         })
         this.setCurrentIndex(findIndex)
       },
-      _handleLyric({lineNum, txt}) {
+      handleLyric({lineNum, txt}) {
         this.currentLineNum = lineNum
         if (lineNum > 5) {
           let lineEl = this.$refs.lyricLine[lineNum - 5]
@@ -414,7 +414,10 @@
       })
     },
     watch: {
-      currentSong() {
+      currentSong(newSong, oldSong) {
+        if (newSong.id === oldSong.id) {
+          return
+        }
         clearTimeout(this.timer)
         if (this.currentLyric) {
           this.currentLyric.stop()
