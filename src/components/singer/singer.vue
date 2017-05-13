@@ -27,7 +27,7 @@
       this._getSingerList()
     },
     methods: {
-      handlePlayList(playlist) {
+      handlePlaylist(playlist) {
         const bottom = playlist.length > 0 ? '60px' : ''
         this.$refs.singer.style.bottom = bottom
         this.$refs.list.refresh()
