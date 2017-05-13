@@ -48,9 +48,7 @@
         this._triggerPercent()
       },
       progressClick(e) {
-        const rect = this.$refs.progressBar.getBoundingClientRect()
-        const offsetWidth = Math.min(this._getBarWidth(), Math.max(0, e.pageX - rect.left))
-        this._offset(offsetWidth)
+        this._offset(e.offsetX)
         this._triggerPercent()
       },
       _triggerPercent() {
