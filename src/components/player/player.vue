@@ -31,7 +31,7 @@
               <div class="playing-lyric">{{playingLyric}}</div>
             </div>
           </div>
-          <scroll class="middle-r" ref="lyricList">
+          <scroll class="middle-r" ref="lyricList" :data="currentLyric && currentLyric.lines">
             <div class="lyric-wrapper">
               <div v-if="currentLyric">
                 <p ref="lyricLine"
@@ -289,12 +289,9 @@
             return
           }
           this.currentLyric = new Lyric(lyric, this.handleLyric)
-          this.$nextTick(() => {
-            this.$refs.lyricList.refresh()
-            if (this.playing) {
-              this.currentLyric.play()
-            }
-          })
+          if (this.playing) {
+            this.currentLyric.play()
+          }
         }).catch((e) => {
           this.currentLyric = null
           this.playingLyric = ''
@@ -312,7 +309,7 @@
         }
         const deltaX = e.touches[0].pageX - this.touch.startX
         const deltaY = e.touches[0].pageY - this.touch.startY
-        if (Math.abs(deltaY) > Math.abs(deltaX) && this.touch.left === -window.innerWidth) {
+        if (Math.abs(deltaY) > Math.abs(deltaX)) {
           return
         }
         const left = this.currentShow === 'cd' ? 0 : -window.innerWidth
