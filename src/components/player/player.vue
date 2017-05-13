@@ -366,12 +366,8 @@
         this.setPlayList(list)
       },
       resetCurrentIndex(list, song) {
-        let findIndex = 0
-        list.some((item, index) => {
-          if (item.id === song.id) {
-            findIndex = index
-            return true
-          }
+        let findIndex = list.findIndex((item) => {
+          return item.id === song.id
         })
         this.setCurrentIndex(findIndex)
       },
@@ -420,11 +416,11 @@
     watch: {
       currentSong() {
         clearTimeout(this.timer)
+        if (this.currentLyric) {
+          this.currentLyric.stop()
+        }
         this.timer = setTimeout(() => {
           this.$refs.audio.play()
-          if (this.currentLyric) {
-            this.currentLyric.stop()
-          }
           this.getLyric()
         }, 1000)
       },

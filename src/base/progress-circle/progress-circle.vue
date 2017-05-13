@@ -28,7 +28,7 @@
     },
     computed: {
       dashOffset() {
-        return (1 - this.percent) * Math.PI * 100
+        return (1 - this.percent) * this.dashArray
       }
     }
   }
