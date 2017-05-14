@@ -14,7 +14,7 @@
           </ul>
         </li>
       </ul>
-      <div class="loading-container" v-show="!topList.length && !topList.length">
+      <div class="loading-container" v-show="!topList.length">
         <loading></loading>
       </div>
     </scroll>
