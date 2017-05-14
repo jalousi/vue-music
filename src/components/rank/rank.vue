@@ -4,7 +4,7 @@
       <ul>
         <li @click="selectItem(item)" class="item" v-for="item in topList">
           <div class="icon">
-            <img width="100" height="100" :src="defaultImage" v-lazy="item.picUrl"/>
+            <img width="100" height="100" v-lazy="item.picUrl"/>
           </div>
           <ul class="songlist">
             <li class="song" v-for="(song,index) in item.songList">
@@ -41,7 +41,7 @@
       }
     },
     methods: {
-      handlePlayList(playlist) {
+      handlePlaylist(playlist) {
         const bottom = playlist.length > 0 ? '60px' : ''
 
         this.$refs.rank.style.bottom = bottom
