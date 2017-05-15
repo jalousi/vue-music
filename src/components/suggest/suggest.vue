@@ -1,6 +1,12 @@
 <template>
-  <scroll ref="suggest" class="suggest" :data="result" :pullup="pullup" :beforeScroll="beforeScroll"
-          @scrollToEnd="searchMore" @beforeScroll="listScroll">
+  <scroll ref="suggest"
+          class="suggest"
+          :data="result"
+          :pullup="pullup"
+          :beforeScroll="beforeScroll"
+          @scrollToEnd="searchMore"
+          @beforeScroll="listScroll"
+  >
     <ul class="suggest-list">
       <li @click="selectItem(item)" class="suggest-item" v-for="item in result">
         <div class="icon">
@@ -29,6 +35,7 @@
   import Singer from 'common/js/singer'
 
   const TYPE_SINGER = 'singer'
+  const perpage = 20
 
   export default {
     props: {
@@ -58,7 +65,7 @@
         this.page = 1
         this.hasMore = true
         this.$refs.suggest.scrollTo(0, 0)
-        search(this.query, this.page, this.showSinger).then((res) => {
+        search(this.query, this.page, this.showSinger, perpage).then((res) => {
           if (res.code === ERR_OK) {
             this.result = this._genResult(res.data)
             this._checkMore(res.data)
@@ -70,7 +77,7 @@
           return
         }
         this.page++
-        search(this.query, this.page, this.showSinger).then((res) => {
+        search(this.query, this.page, this.showSinger, perpage).then((res) => {
           if (res.code === ERR_OK) {
             this.result = this.result.concat(this._genResult(res.data))
             this._checkMore(res.data)
@@ -131,7 +138,7 @@
       },
       _checkMore(data) {
         const song = data.song
-        if (!song.list.length || (song.curnum + song.curpage * 20) > song.totalnum) {
+        if (!song.list.length || (song.curnum + song.curpage * perpage) > song.totalnum) {
           this.hasMore = false
         }
       },
