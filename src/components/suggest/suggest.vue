@@ -24,7 +24,7 @@
   import NoResult from 'base/no-result/no-result'
   import {search} from 'api/search'
   import {ERR_OK} from 'api/config'
-  import {filterSinger, createSong} from 'common/js/song'
+  import {createSong} from 'common/js/song'
   import {mapMutations, mapActions} from 'vuex'
   import Singer from 'common/js/singer'
 
@@ -93,15 +93,14 @@
           })
           this.setSinger(singer)
         } else {
-          const song = createSong(item)
-          this.insertSong(song)
+          this.insertSong(item)
         }
       },
       getDisplayName(item) {
         if (item.type === TYPE_SINGER) {
           return item.singername
         } else {
-          return `${item.songname}-${filterSinger(item.singer)}`
+          return `${item.name}-${item.singer}`
         }
       },
       getIconCls(item) {
@@ -117,13 +116,22 @@
           ret.push({...data.zhida, ...{type: TYPE_SINGER}})
         }
         if (data.song) {
-          ret = ret.concat(data.song.list)
+          ret = ret.concat(this._normalizeSongs(data.song.list))
         }
+        return ret
+      },
+      _normalizeSongs(list) {
+        let ret = []
+        list.forEach((musicData) => {
+          if (musicData.songid && musicData.albummid) {
+            ret.push(createSong(musicData))
+          }
+        })
         return ret
       },
       _checkMore(data) {
         const song = data.song
-        if (!song.list.length || song.curnum === song.totalnum) {
+        if (!song.list.length || (song.curnum + song.curpage * 20) > song.totalnum) {
           this.hasMore = false
         }
       },
