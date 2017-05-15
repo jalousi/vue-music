@@ -9,7 +9,7 @@
           <div class="hot-key">
             <h1 class="title">热门搜索</h1>
             <ul>
-              <li @click="addToQuery(item.k)" class="item" v-for="item in hotKey">
+              <li @click="addQuery(item.k)" class="item" v-for="item in hotKey">
                 <span>{{item.k}}</span>
               </li>
             </ul>
@@ -21,7 +21,7 @@
                 <i class="icon-clear"></i>
               </span>
             </h1>
-            <search-list @delete="deleteOne" @select="addToQuery" :searches="searchHistory"></search-list>
+            <search-list @delete="deleteOne" @select="addQuery" :searches="searchHistory"></search-list>
           </div>
         </div>
       </scroll>
@@ -63,7 +63,7 @@
       ])
     },
     created() {
-      this.getHotKey()
+      this._getHotKey()
     },
     methods: {
       handlePlaylist(playlist) {
@@ -78,7 +78,7 @@
           this.$refs.shortcut.refresh()
         }
       },
-      getHotKey() {
+      _getHotKey() {
         getHotKey().then((res) => {
           if (res.code === ERR_OK) {
             this.hotKey = res.data.hotkey.slice(0, 10)
@@ -97,8 +97,8 @@
       blurInput() {
         this.$refs.searchBox.blur()
       },
-      addToQuery(name) {
-        this.$refs.searchBox.setQuery(name)
+      addQuery(query) {
+        this.$refs.searchBox.setQuery(query)
       },
       deleteOne(item) {
         this.setSearchHistory(deleteSearch(item))
