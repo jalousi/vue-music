@@ -88,7 +88,6 @@
         this.$emit('listScroll')
       },
       selectItem(item) {
-        this.$emit('select', item)
         if (item.type === TYPE_SINGER) {
           const singer = new Singer({
             id: item.singermid,
@@ -101,6 +100,7 @@
         } else {
           this.insertSong(item)
         }
+        this.$emit('select', item)
       },
       getDisplayName(item) {
         if (item.type === TYPE_SINGER) {

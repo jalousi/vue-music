@@ -39,36 +39,31 @@ export const insertSong = function ({commit, state}, song) {
   let currentIndex = state.currentIndex
   // 记录当前歌曲
   let currentSong = playlist[currentIndex]
-
+  // 查找当前列表中是否有待插入的歌曲并返回其索引
   let fpIndex = findIndex(playlist, song)
   // 因为是插入歌曲，所以索引+1
   currentIndex++
-  // 插入这首歌
+  // 插入这首歌到当前索引位置
   playlist.splice(currentIndex, 0, song)
   // 如果已经包含了这首歌
   if (fpIndex > -1) {
     // 如果当前插入的序号大于列表中的序号
     if (currentIndex > fpIndex) {
-      // 这样我们需要把索引回退1个
-      currentIndex--
       playlist.splice(fpIndex, 1)
+      currentIndex--
     } else {
       playlist.splice(fpIndex + 1, 1)
     }
   }
 
-  let sIndex = currentIndex
+  let currentSIndex = findIndex(sequenceList, currentSong) + 1
+
   let fsIndex = findIndex(sequenceList, song)
 
-  if (state.mode === playMode.random) {
-    sIndex = findIndex(sequenceList, currentSong) + 1
-  }
+  sequenceList.splice(currentSIndex, 0, song)
 
-  sequenceList.splice(sIndex, 0, song)
-  // 如果已经包含了这首歌
   if (fsIndex > -1) {
-    // 如果插入的序号大于列表中的序号
-    if (sIndex > fsIndex) {
+    if (currentSIndex > fsIndex) {
       sequenceList.splice(fsIndex, 1)
     } else {
       sequenceList.splice(fsIndex + 1, 1)
