@@ -89,7 +89,6 @@
       },
       selectItem(item) {
         this.$emit('select', item)
-        this.saveSearchHistory(this.query)
         if (item.type === TYPE_SINGER) {
           const singer = new Singer({
             id: item.singermid,
@@ -146,8 +145,7 @@
         setSinger: 'SET_SINGER'
       }),
       ...mapActions([
-        'insertSong',
-        'saveSearchHistory'
+        'insertSong'
       ])
     },
     watch: {

@@ -27,7 +27,7 @@
       </scroll>
     </div>
     <div class="search-result" v-show="query" ref="searchResult">
-      <suggest @listScroll="blurInput" ref="suggest" :query="query"></suggest>
+      <suggest @listScroll="blurInput" @select="saveSearch" ref="suggest" :query="query"></suggest>
     </div>
     <confirm ref="confirm" @confirm="confirmClear" text="是否清空所有搜索历史" confirmBtnText="清空"></confirm>
     <router-view></router-view>
@@ -94,6 +94,9 @@
       search(query) {
         this.query = query
       },
+      saveSearch() {
+        this.saveSearchHistory(this.query)
+      },
       blurInput() {
         this.$refs.searchBox.blur()
       },
@@ -107,7 +110,8 @@
         setSearchHistory: 'SET_SEARCH_HISTORY'
       }),
       ...mapActions([
-        'clearSearchHistory'
+        'clearSearchHistory',
+        'saveSearchHistory'
       ])
     },
     watch: {
