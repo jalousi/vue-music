@@ -72,7 +72,7 @@
           this.$refs.searchResult.style.bottom = bottom
           this.$refs.suggest.refresh()
         }
-        if (this.$refs.shortcut) {
+        if (this.$refs.shortcutWrapper) {
           this.$refs.shortcutWrapper.style.bottom = bottom
           this.$refs.shortcut.refresh()
         }
