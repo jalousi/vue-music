@@ -17,11 +17,11 @@
           <div class="search-history" v-show="searchHistory.length">
             <h1 class="title">
               <span class="text">搜索历史</span>
-              <span @click="deleteAll" class="clear">
+              <span @click="showConfirm" class="clear">
                 <i class="icon-clear"></i>
               </span>
             </h1>
-            <search-list @delete="deleteOne" @select="addQuery" :searches="searchHistory"></search-list>
+            <search-list @delete="deleteSearchHistory" @select="addQuery" :searches="searchHistory"></search-list>
           </div>
         </div>
       </scroll>
@@ -84,7 +84,7 @@
           }
         })
       },
-      deleteAll() {
+      showConfirm() {
         this.$refs.confirm.show()
       },
       confirmClear() {
@@ -101,9 +101,6 @@
       },
       addQuery(query) {
         this.$refs.searchBox.setQuery(query)
-      },
-      deleteOne(item) {
-        this.deleteSearchHistory(item)
       },
       ...mapMutations({
         setSearchHistory: 'SET_SEARCH_HISTORY'
