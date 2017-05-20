@@ -44,7 +44,6 @@
   import {ERR_OK} from 'api/config'
   import {playlistMixin} from 'common/js/mixin'
   import {mapGetters, mapMutations, mapActions} from 'vuex'
-  import {deleteSearch} from 'common/js/cache'
 
   export default {
     mixins: [playlistMixin],
@@ -104,14 +103,15 @@
         this.$refs.searchBox.setQuery(query)
       },
       deleteOne(item) {
-        this.setSearchHistory(deleteSearch(item))
+        this.deleteSearchHistory(item)
       },
       ...mapMutations({
         setSearchHistory: 'SET_SEARCH_HISTORY'
       }),
       ...mapActions([
-        'clearSearchHistory',
-        'saveSearchHistory'
+        'saveSearchHistory',
+        'deleteSearchHistory',
+        'clearSearchHistory'
       ])
     },
     watch: {
