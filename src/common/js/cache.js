@@ -25,21 +25,21 @@ function deleteFromArray(arr, compare) {
 }
 
 export function saveSearch(name) {
-  let searchs = storage.get(SEARCH_KEY, [])
-  insertArray(searchs, name, (item) => {
+  let searches = storage.get(SEARCH_KEY, [])
+  insertArray(searches, name, (item) => {
     return item === name
   }, SEARCH_MAX_LEN)
-  storage.set(SEARCH_KEY, searchs)
-  return searchs
+  storage.set(SEARCH_KEY, searches)
+  return searches
 }
 
 export function deleteSearch(name) {
-  let searchs = storage.get(SEARCH_KEY, [])
-  deleteFromArray(searchs, (item) => {
+  let searches = storage.get(SEARCH_KEY, [])
+  deleteFromArray(searches, (item) => {
     return item === name
   })
-  storage.set(SEARCH_KEY, searchs)
-  return searchs
+  storage.set(SEARCH_KEY, searches)
+  return searches
 }
 
 export function clearSearch() {
