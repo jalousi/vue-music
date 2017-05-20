@@ -29,7 +29,7 @@
     <div class="search-result" v-show="query" ref="searchResult">
       <suggest @listScroll="blurInput" @select="saveSearch" ref="suggest" :query="query"></suggest>
     </div>
-    <confirm ref="confirm" @confirm="confirmClear" text="是否清空所有搜索历史" confirmBtnText="清空"></confirm>
+    <confirm ref="confirm" @confirm="clearSearchHistory" text="是否清空所有搜索历史" confirmBtnText="清空"></confirm>
     <router-view></router-view>
   </div>
 </template>
@@ -77,19 +77,6 @@
           this.$refs.shortcut.refresh()
         }
       },
-      _getHotKey() {
-        getHotKey().then((res) => {
-          if (res.code === ERR_OK) {
-            this.hotKey = res.data.hotkey.slice(0, 10)
-          }
-        })
-      },
-      showConfirm() {
-        this.$refs.confirm.show()
-      },
-      confirmClear() {
-        this.clearSearchHistory()
-      },
       search(query) {
         this.query = query
       },
@@ -101,6 +88,16 @@
       },
       addQuery(query) {
         this.$refs.searchBox.setQuery(query)
+      },
+      showConfirm() {
+        this.$refs.confirm.show()
+      },
+      _getHotKey() {
+        getHotKey().then((res) => {
+          if (res.code === ERR_OK) {
+            this.hotKey = res.data.hotkey.slice(0, 10)
+          }
+        })
       },
       ...mapMutations({
         setSearchHistory: 'SET_SEARCH_HISTORY'
