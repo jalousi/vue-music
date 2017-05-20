@@ -68,14 +68,11 @@
       handlePlaylist(playlist) {
         const bottom = playlist.length > 0 ? '60px' : ''
 
-        if (this.$refs.searchResult) {
-          this.$refs.searchResult.style.bottom = bottom
-          this.$refs.suggest.refresh()
-        }
-        if (this.$refs.shortcutWrapper) {
-          this.$refs.shortcutWrapper.style.bottom = bottom
-          this.$refs.shortcut.refresh()
-        }
+        this.$refs.searchResult.style.bottom = bottom
+        this.$refs.suggest.refresh()
+
+        this.$refs.shortcutWrapper.style.bottom = bottom
+        this.$refs.shortcut.refresh()
       },
       search(query) {
         this.query = query
