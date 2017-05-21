@@ -19,7 +19,8 @@
               </song-list>
             </div>
           </scroll>
-          <scroll ref="searchList" v-if="currentIndex===1" class="list-scroll" :data="searchHistory">
+          <scroll :refreshDelay="refreshDelay" ref="searchList" v-if="currentIndex===1" class="list-scroll"
+                  :data="searchHistory">
             <div class="list-inner">
               <search-list @delete="deleteSearchHistory" @select="addQuery" :searches="searchHistory"></search-list>
             </div>
@@ -32,7 +33,7 @@
       <top-tip ref="topTip">
         <div class="tip-title">
           <i class="icon-ok"></i>
-          <span class="text">1首已经添加到播放队列</span>
+          <span class="text">1首歌曲已经添加到播放列表</span>
         </div>
       </top-tip>
     </div>

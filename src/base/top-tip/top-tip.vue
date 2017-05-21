@@ -1,6 +1,6 @@
 <template>
   <transition name="drop">
-    <div class="top-tip" v-show="showFlag">
+    <div class="top-tip" v-show="showFlag" @click.stop="hide">
       <slot></slot>
     </div>
   </transition>
@@ -8,6 +8,12 @@
 
 <script type="text/ecmascript-6">
   export default {
+    props: {
+      delay: {
+        type: Number,
+        default: 2000
+      }
+    },
     data() {
       return {
         showFlag: false
@@ -19,7 +25,7 @@
         clearTimeout(this.timer)
         this.timer = setTimeout(() => {
           this.hide()
-        }, 2000)
+        }, this.delay)
       },
       hide() {
         this.showFlag = false
