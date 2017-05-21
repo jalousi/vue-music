@@ -58,7 +58,7 @@
       return {
         showFlag: false,
         showSinger: false,
-        currentIndex: -1,
+        currentIndex: 0,
         songs: [],
         switches: [
           {
@@ -78,7 +78,6 @@
     methods: {
       show() {
         this.showFlag = true
-        this.currentIndex = 0
         this.$nextTick(() => {
           this.$refs.songScroll.refresh()
         })
