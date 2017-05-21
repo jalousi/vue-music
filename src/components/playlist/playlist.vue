@@ -53,7 +53,7 @@
     data() {
       return {
         showFlag: false,
-        refreshDelay: 100
+        refreshDelay: 120
       }
     },
     computed: {
