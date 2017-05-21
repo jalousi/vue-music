@@ -41,7 +41,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {mapMutations, mapActions} from 'vuex'
+  import {mapActions} from 'vuex'
   import {playMode} from 'common/js/config'
   import Scroll from 'base/scroll/scroll'
   import Confirm from 'base/confirm/confirm'
@@ -63,10 +63,10 @@
     methods: {
       show() {
         this.showFlag = true
-        this.$nextTick(() => {
+        setTimeout(() => {
           this.$refs.listContent.refresh()
           this.scrollToCurrent(this.currentSong)
-        })
+        }, 20)
       },
       hide() {
         this.showFlag = false
@@ -87,7 +87,7 @@
       selectItem(item, index) {
         if (this.mode === playMode.random) {
           index = this.playlist.findIndex((song) => {
-            return song.index === item.index
+            return song.id === item.id
           })
         }
         this.setCurrentIndex(index)
@@ -107,9 +107,6 @@
       addSong() {
         this.$refs.addSong.show()
       },
-      ...mapMutations({
-        setCurrentIndex: 'SET_CURRENT_INDEX'
-      }),
       ...mapActions([
         'deleteSong',
         'deleteSongList'
