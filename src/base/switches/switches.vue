@@ -12,9 +12,7 @@
     props: {
       switches: {
         type: Array,
-        default() {
-          return []
-        }
+        default: []
       },
       currentIndex: {
         type: Number,

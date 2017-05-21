@@ -62,12 +62,10 @@
         songs: [],
         switches: [
           {
-            name: '最近播放',
-            val: 0
+            name: '最近播放'
           },
           {
-            name: '搜索历史',
-            val: 1
+            name: '搜索历史'
           }
         ]
       }
