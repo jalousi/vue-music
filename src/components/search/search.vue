@@ -43,7 +43,7 @@
   import {getHotKey} from 'api/search'
   import {ERR_OK} from 'api/config'
   import {playlistMixin} from 'common/js/mixin'
-  import {mapGetters, mapMutations, mapActions} from 'vuex'
+  import {mapGetters, mapActions} from 'vuex'
 
   export default {
     mixins: [playlistMixin],
@@ -96,9 +96,6 @@
           }
         })
       },
-      ...mapMutations({
-        setSearchHistory: 'SET_SEARCH_HISTORY'
-      }),
       ...mapActions([
         'saveSearchHistory',
         'deleteSearchHistory',
