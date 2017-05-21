@@ -89,9 +89,6 @@
       hide() {
         this.showFlag = false
       },
-      search(query) {
-        this.query = query
-      },
       selectSong(song, index) {
         if (index !== 0) {
           this.insertSong(new Song(song))
@@ -100,6 +97,7 @@
       },
       selectSuggest() {
         this.$refs.topTip.show()
+        this.saveSearch()
       },
       switchItem(index) {
         this.currentIndex = index

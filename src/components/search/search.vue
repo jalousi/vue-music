@@ -71,12 +71,6 @@
         this.$refs.shortcutWrapper.style.bottom = bottom
         this.$refs.shortcut.refresh()
       },
-      search(query) {
-        this.query = query
-      },
-      saveSearch() {
-        this.saveSearchHistory(this.query)
-      },
       showConfirm() {
         this.$refs.confirm.show()
       },
@@ -88,7 +82,6 @@
         })
       },
       ...mapActions([
-        'saveSearchHistory',
         'clearSearchHistory'
       ])
     },

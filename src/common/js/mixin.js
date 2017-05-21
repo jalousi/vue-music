@@ -73,13 +73,20 @@ export const searchMixin = {
     ])
   },
   methods: {
+    search(query) {
+      this.query = query
+    },
     blurInput() {
       this.$refs.searchBox.blur()
     },
     addQuery(query) {
       this.$refs.searchBox.setQuery(query)
     },
+    saveSearch() {
+      this.saveSearchHistory(this.query)
+    },
     ...mapActions([
+      'saveSearchHistory',
       'deleteSearchHistory'
     ])
   }
