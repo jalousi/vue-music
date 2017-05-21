@@ -183,8 +183,9 @@
           align-items: center
           height: 40px
           padding: 0 30px 0 20px
+          overflow: hidden
           &.list-enter-active, &.list-leave-active
-            transition: all 0.1s linear
+            transition: all 0.1s
           &.list-enter, &.list-leave-to
             height: 0
           .current
