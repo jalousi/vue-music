@@ -67,13 +67,18 @@ export const playerMixin = {
 }
 
 export const searchMixin = {
+  data() {
+    return {
+      query: ''
+    }
+  },
   computed: {
     ...mapGetters([
       'searchHistory'
     ])
   },
   methods: {
-    search(query) {
+    onQueryChange(query) {
       this.query = query
     },
     blurInput() {

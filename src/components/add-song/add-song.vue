@@ -8,7 +8,7 @@
         </div>
       </div>
       <div class="search-box-wrapper">
-        <search-box ref="searchBox" @query="search" placeholder="搜索歌曲"></search-box>
+        <search-box ref="searchBox" @query="onQueryChange" placeholder="搜索歌曲"></search-box>
       </div>
       <div class="shortcut" v-show="!query">
         <switches :switches="switches" :currentIndex="currentIndex" @switch="switchItem"></switches>
@@ -26,7 +26,7 @@
           </scroll>
         </div>
       </div>
-      <div class="search-result" v-show="query" ref="searchResult">
+      <div class="search-result" v-show="query">
         <suggest @listScroll="blurInput" ref="suggest" :query="query" :showSinger="showSinger"
                  @select="selectSuggest"></suggest>
       </div>
@@ -60,7 +60,6 @@
         showSinger: false,
         currentIndex: -1,
         songs: [],
-        query: '',
         switches: [
           {
             name: '最近播放',
