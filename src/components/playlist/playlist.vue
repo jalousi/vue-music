@@ -6,7 +6,7 @@
           <h1 class="title">
             <i class="icon" :class="iconMode" @click="changeMode"></i>
             <span class="text">{{title}}</span>
-            <span class="clear" @click="clear"><i class="icon-clear"></i></span>
+            <span class="clear" @click="showConfirm"><i class="icon-clear"></i></span>
           </h1>
         </div>
         <scroll ref="listContent" :data="sequenceList" class="list-content">
@@ -71,7 +71,7 @@
       hide() {
         this.showFlag = false
       },
-      clear() {
+      showConfirm() {
         this.$refs.confirm.show()
       },
       confirmClear() {
