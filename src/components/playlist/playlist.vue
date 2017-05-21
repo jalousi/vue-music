@@ -11,7 +11,8 @@
         </div>
         <scroll ref="listContent" :data="sequenceList" class="list-content">
           <transition-group name="list" tag="ul">
-            <li :key="item.id" ref="listItem" class="item" v-for="(item,index) in sequenceList" @click="selectItem(item,index)">
+            <li :key="item.id" ref="listItem" class="item" v-for="(item,index) in sequenceList"
+                @click="selectItem(item,index)">
               <i class="current" :class="getCurrentIcon(item)"></i>
               <span class="text">{{item.name}}</span>
               <span class="like">
@@ -85,23 +86,17 @@
       },
       selectItem(item, index) {
         if (this.mode === playMode.random) {
-          this.playlist.some((song, index) => {
-            if (song.id === item.id) {
-              this.setCurrentIndex(index)
-              return true
-            }
+          index = this.playlist.findIndex((song) => {
+            return song.index === item.index
           })
-        } else {
-          this.setCurrentIndex(index)
         }
+        this.setCurrentIndex(index)
       },
       scrollToCurrent(current) {
-        this.sequenceList.some((song, index) => {
-          if (current.id === song.id) {
-            this.$refs.listContent.scrollToElement(this.$refs.listItem[index], 300)
-            return true
-          }
+        const index = this.sequenceList.findIndex((song) => {
+          return current.id === song.id
         })
+        this.$refs.listContent.scrollToElement(this.$refs.listItem[index], 300)
       },
       deleteOne(item) {
         this.deleteSong(item)

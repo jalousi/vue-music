@@ -145,6 +145,7 @@
         return this.currentTime / this.currentSong.duration
       },
       ...mapGetters([
+        'currentIndex',
         'fullScreen',
         'playing'
       ])
