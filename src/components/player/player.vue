@@ -387,8 +387,7 @@
         }
       },
       ...mapMutations({
-        setFullScreen: 'SET_FULL_SCREEN',
-        setPlayingState: 'SET_PLAYING_STATE'
+        setFullScreen: 'SET_FULL_SCREEN'
       }),
       ...mapActions([
         'savePlayHistory'

@@ -91,6 +91,7 @@
           })
         }
         this.setCurrentIndex(index)
+        this.setPlayingState(true)
       },
       scrollToCurrent(current) {
         const index = this.sequenceList.findIndex((song) => {
