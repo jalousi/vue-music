@@ -13,13 +13,13 @@
       <div class="shortcut" v-show="!query">
         <switches :switches="switches" :currentIndex="currentIndex" @switch="switchItem"></switches>
         <div class="list-wrapper">
-          <scroll v-if="currentIndex===0" class="list-scroll" ref="songScroll" :data="playHistory">
+          <scroll ref="songList" v-if="currentIndex===0" class="list-scroll" :data="playHistory">
             <div class="list-inner">
               <song-list :songs="playHistory" @select="selectSong">
               </song-list>
             </div>
           </scroll>
-          <scroll v-if="currentIndex===1" class="list-scroll" :data="searchHistory">
+          <scroll ref="searchList" v-if="currentIndex===1" class="list-scroll" :data="searchHistory">
             <div class="list-inner">
               <search-list @delete="deleteSearchHistory" @select="addQuery" :searches="searchHistory"></search-list>
             </div>
@@ -27,8 +27,7 @@
         </div>
       </div>
       <div class="search-result" v-show="query">
-        <suggest @listScroll="blurInput" ref="suggest" :query="query" :showSinger="showSinger"
-                 @select="selectSuggest"></suggest>
+        <suggest :query="query" :showSinger="showSinger" @select="selectSuggest" @listScroll="blurInput"></suggest>
       </div>
       <top-tip ref="topTip">
         <div class="tip-title">
@@ -78,9 +77,13 @@
     methods: {
       show() {
         this.showFlag = true
-        this.$nextTick(() => {
-          this.$refs.songScroll.refresh()
-        })
+        setTimeout(() => {
+          if (this.currentIndex === 0) {
+            this.$refs.songList.refresh()
+          } else {
+            this.$refs.searchList.refresh()
+          }
+        }, 20)
       },
       hide() {
         this.showFlag = false

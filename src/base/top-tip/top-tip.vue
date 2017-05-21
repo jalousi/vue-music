@@ -1,5 +1,5 @@
 <template>
-  <transition name="fade">
+  <transition name="drop">
     <div class="top-tip" v-show="showFlag">
       <slot></slot>
     </div>
@@ -18,7 +18,7 @@
         this.showFlag = true
         clearTimeout(this.timer)
         this.timer = setTimeout(() => {
-          this.showFlag = false
+          this.hide()
         }, 2000)
       },
       hide() {
@@ -37,10 +37,8 @@
     width: 100%
     z-index: 500
     background: $color-dialog-background
-
-  .fade-enter-active, .fade-leave-active
-    transition: all 0.3s
-
-  .fade-enter, .fade-leave-to
-    transform: translate3d(0, -100%, 0)
+    &.drop-enter-active, &.drop-leave-active
+      transition: all 0.3s
+    &.drop-enter, &.drop-leave-to
+      transform: translate3d(0, -100%, 0)
 </style>
