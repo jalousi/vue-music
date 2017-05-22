@@ -60,7 +60,7 @@ export const playerMixin = {
     },
     toggleFavorite(song) {
       if (this.isFavorite(song)) {
-        this.deleteFavoriteFromList(song)
+        this.deleteFavoriteList(song)
       } else {
         this.saveFavoriteList(song)
       }
