@@ -85,7 +85,7 @@ export const playerMixin = {
     }),
     ...mapActions([
       'saveFavoriteList',
-      'deleteFavoriteFromList'
+      'deleteFavoriteList'
     ])
   }
 }
