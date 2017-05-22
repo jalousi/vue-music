@@ -12,16 +12,14 @@
         <span class="text">随机播放全部</span>
       </div>
       <div class="list-wrapper" ref="listWrapper">
-        <scroll v-if="currentIndex===0" class="list-scroll" :data="favoriteList" ref="favoriteScroll">
+        <scroll ref="favoriteList" class="list-scroll" v-if="currentIndex===0" :data="favoriteList">
           <div class="list-inner">
-            <song-list :songs="favoriteList" @select="selectSong">
-            </song-list>
+            <song-list :songs="favoriteList" @select="selectSong"></song-list>
           </div>
         </scroll>
-        <scroll v-if="currentIndex===1" class="list-scroll" :data="playHistory" ref="playScroll">
+        <scroll ref="playList" class="list-scroll" v-if="currentIndex===1" :data="playHistory">
           <div class="list-inner">
-            <song-list :songs="playHistory" @select="selectSong">
-            </song-list>
+            <song-list :songs="playHistory" @select="selectSong"></song-list>
           </div>
         </scroll>
       </div>
@@ -33,12 +31,11 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import SongList from 'base/song-list/song-list'
-  import Scroll from 'base/scroll/scroll'
   import Switches from 'base/switches/switches'
+  import Scroll from 'base/scroll/scroll'
+  import SongList from 'base/song-list/song-list'
   import NoResult from 'base/no-result/no-result'
   import Song from 'common/js/song'
-
   import {mapGetters, mapActions} from 'vuex'
   import {playlistMixin} from 'common/js/mixin'
 
@@ -81,11 +78,8 @@
       handlePlaylist(playlist) {
         const bottom = playlist.length > 0 ? '60px' : ''
         this.$refs.listWrapper.style.bottom = bottom
-        this.$refs.favoriteScroll && this.$refs.favoriteScroll.refresh()
-        this.$refs.playScroll && this.$refs.playScroll.refresh()
-      },
-      back() {
-        this.$router.back()
+        this.$refs.favoriteList && this.$refs.favoriteList.refresh()
+        this.$refs.playList && this.$refs.playList.refresh()
       },
       switchItem(index) {
         this.currentIndex = index
@@ -93,8 +87,14 @@
       selectSong(song) {
         this.insertSong(new Song(song))
       },
+      back() {
+        this.$router.back()
+      },
       random() {
         let list = this.currentIndex === 0 ? this.favoriteList : this.playHistory
+        if (list.length === 0) {
+          return
+        }
         list = list.map((song) => {
           return new Song(song)
         })
@@ -103,14 +103,14 @@
         })
       },
       ...mapActions([
-        'randomPlay',
-        'insertSong'
+        'insertSong',
+        'randomPlay'
       ])
     },
     components: {
-      SongList,
-      Scroll,
       Switches,
+      Scroll,
+      SongList,
       NoResult
     }
   }
