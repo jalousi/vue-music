@@ -422,7 +422,6 @@
       playing(newPlaying) {
         const audio = this.$refs.audio
         this.$nextTick(() => {
-          console.log(newPlaying)
           newPlaying ? audio.play() : audio.pause()
         })
       }
