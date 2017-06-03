@@ -1,6 +1,6 @@
 import * as types from './mutation-types'
 
-const matutaions = {
+const mutations = {
   [types.SET_SINGER](state, singer) {
     state.singer = singer
   },
@@ -39,4 +39,4 @@ const matutaions = {
   }
 }
 
-export default matutaions
+export default mutations
