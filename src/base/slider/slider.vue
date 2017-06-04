@@ -55,7 +55,12 @@
         this.slider.refresh()
       })
     },
-    destroyed() {
+    activated() {
+      if (this.autoPlay) {
+        this._play()
+      }
+    },
+    deactivated() {
       clearTimeout(this.timer)
     },
     methods: {
