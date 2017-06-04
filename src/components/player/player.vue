@@ -318,6 +318,8 @@
       },
       middleTouchStart(e) {
         this.touch.initiated = true
+        // 用来判断是否是一次移动
+        this.touch.moved = false
         const touch = e.touches[0]
         this.touch.startX = touch.pageX
         this.touch.startY = touch.pageY
@@ -332,6 +334,9 @@
         if (Math.abs(deltaY) > Math.abs(deltaX)) {
           return
         }
+        if (!this.touch.moved) {
+          this.touch.moved = true
+        }
         const left = this.currentShow === 'cd' ? 0 : -window.innerWidth
         const offsetWidth = Math.min(0, Math.max(-window.innerWidth, left + deltaX))
         this.touch.percent = Math.abs(offsetWidth / window.innerWidth)
@@ -341,6 +346,9 @@
         this.$refs.middleL.style[transitionDuration] = 0
       },
       middleTouchEnd() {
+        if (!this.touch.moved) {
+          return
+        }
         let offsetWidth
         let opacity
         if (this.currentShow === 'cd') {
