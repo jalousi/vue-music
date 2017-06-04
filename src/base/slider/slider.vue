@@ -63,6 +63,9 @@
     deactivated() {
       clearTimeout(this.timer)
     },
+    beforeDestroy() {
+      clearTimeout(this.timer)
+    },
     methods: {
       _setSliderWidth(isResize) {
         this.children = this.$refs.sliderGroup.children
