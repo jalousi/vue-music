@@ -5,9 +5,9 @@
 本源码非开源项目，仅仅用于 Vue 实战项目的学习，不可作为商业用途。
 希望同学们一起努力抵制盗版侵权行为，尽量不要把这个项目开源。
 
-[项目演示地址](http://vuemusic.t.imooc.io/)
+[项目演示地址](http://47.92.26.198:9000/)
 
-![二维码](http://qr.api.cli.im/qr?data=http%253A%252F%252Fvuemusic.t.imooc.io%252F&level=H&transparent=false&bgcolor=%23ffffff&forecolor=%23000000&blockpixel=12&marginblock=1&logourl=&size=280&kid=cliim&key=0d5ae62849f664bd75609808bbc0d978)
+![二维码](http://qr.api.cli.im/qr?data=http%253A%252F%252F47.92.26.198%253A9000%252F&level=H&transparent=false&bgcolor=%23ffffff&forecolor=%23000000&blockpixel=12&marginblock=1&logourl=&size=280&kid=cliim&key=f349d2cedbecf0b7655323193ed801b2)
 
 ## 你可以学到什么
 我们可以通过一张图来认识一下本课程的知识结构
