@@ -71,7 +71,9 @@
       loadImage() {
         if (!this.checkloaded) {
           this.checkloaded = true
-          this.$refs.scroll.refresh()
+          setTimeout(() => {
+            this.$refs.scroll.refresh()
+          }, 20)
         }
       },
       selectItem(item) {
