@@ -102,6 +102,7 @@
         this.slider = new BScroll(this.$refs.slider, {
           scrollX: true,
           scrollY: false,
+          eventPassthrough: 'vertical',
           momentum: false,
           snap: true,
           snapLoop: this.loop,
