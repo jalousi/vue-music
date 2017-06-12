@@ -51,9 +51,18 @@
         if (!this.slider) {
           return
         }
-        setTimeout(() => {
+        clearTimeout(this.resizeTimer)
+        this.resizeTimer = setTimeout(() => {
+          if (this.slider.isInTransition) {
+            this._onScrollEnd()
+          } else {
+            if (this.autoPlay) {
+              clearTimeout(this.timer)
+              this._play()
+            }
+          }
           this.refresh()
-        }, 20)
+        }, 60)
       })
     },
     activated() {
@@ -100,23 +109,24 @@
           snapSpeed: 400
         })
 
-        this.slider.on('scrollEnd', () => {
-          let pageIndex = this.slider.getCurrentPage().pageX
-          if (this.loop) {
-            pageIndex -= 1
-          }
-          this.currentPageIndex = pageIndex
-
-          if (this.autoPlay) {
-            this._play()
-          }
-        })
+        this.slider.on('scrollEnd', this._onScrollEnd)
 
         this.slider.on('beforeScrollStart', () => {
           if (this.autoPlay) {
             clearTimeout(this.timer)
           }
         })
+      },
+      _onScrollEnd() {
+        let pageIndex = this.slider.getCurrentPage().pageX
+        if (this.loop) {
+          pageIndex -= 1
+        }
+        this.currentPageIndex = pageIndex
+
+        if (this.autoPlay) {
+          this._play()
+        }
       },
       _initDots() {
         this.dots = new Array(this.children.length)
