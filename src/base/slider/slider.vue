@@ -57,7 +57,6 @@
             this._onScrollEnd()
           } else {
             if (this.autoPlay) {
-              clearTimeout(this.timer)
               this._play()
             }
           }
@@ -102,7 +101,6 @@
         this.slider = new BScroll(this.$refs.slider, {
           scrollX: true,
           scrollY: false,
-          eventPassthrough: 'vertical',
           momentum: false,
           snap: true,
           snapLoop: this.loop,
@@ -111,6 +109,12 @@
         })
 
         this.slider.on('scrollEnd', this._onScrollEnd)
+
+        this.slider.on('touchend', () => {
+          if (this.autoPlay) {
+            this._play()
+          }
+        })
 
         this.slider.on('beforeScrollStart', () => {
           if (this.autoPlay) {
@@ -124,7 +128,6 @@
           pageIndex -= 1
         }
         this.currentPageIndex = pageIndex
-
         if (this.autoPlay) {
           this._play()
         }
@@ -137,6 +140,7 @@
         if (this.loop) {
           pageIndex += 1
         }
+        clearTimeout(this.timer)
         this.timer = setTimeout(() => {
           this.slider.goToPage(pageIndex, 0, 400)
         }, this.interval)
