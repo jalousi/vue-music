@@ -295,7 +295,9 @@
           }
           this.currentLyric = new Lyric(lyric, this.handleLyric)
           if (this.playing) {
-            this.currentLyric.play()
+            // 这个时候有可能用户已经播放了歌曲，要切到对应位置
+            const currentTime = this.currentSong.duration * this.percent * 1000
+            this.currentLyric.seek(currentTime)
           }
         }).catch(() => {
           this.currentLyric = null
@@ -417,6 +419,8 @@
         }
         if (this.currentLyric) {
           this.currentLyric.stop()
+          // 重置为null
+          this.currentLyric = null
           this.currentTime = 0
           this.playingLyric = ''
           this.currentLineNum = 0
