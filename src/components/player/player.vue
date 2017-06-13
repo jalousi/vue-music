@@ -241,7 +241,6 @@
             this.togglePlaying()
           }
         }
-        this.songReady = false
       },
       prev() {
         if (!this.songReady) {
@@ -260,7 +259,6 @@
             this.togglePlaying()
           }
         }
-        this.songReady = false
       },
       ready() {
         this.songReady = true
@@ -417,6 +415,7 @@
         if (newSong.id === oldSong.id) {
           return
         }
+        this.songReady = false
         if (this.currentLyric) {
           this.currentLyric.stop()
           // 重置为null
