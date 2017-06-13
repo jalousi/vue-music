@@ -432,6 +432,9 @@
         }, 1000)
       },
       playing(newPlaying) {
+        if (!this.songReady) {
+          return
+        }
         const audio = this.$refs.audio
         this.$nextTick(() => {
           newPlaying ? audio.play() : audio.pause()
