@@ -263,6 +263,11 @@
       ready() {
         this.songReady = true
         this.savePlayHistory(this.currentSong)
+        // 如果歌曲的播放晚于歌词的出现，播放的时候需要同步歌词
+        if (this.currentLyric) {
+          const currentTime = this.currentSong.duration * this.percent * 1000
+          this.currentLyric.seek(currentTime)
+        }
       },
       error() {
         this.songReady = true
@@ -292,7 +297,7 @@
             return
           }
           this.currentLyric = new Lyric(lyric, this.handleLyric)
-          if (this.playing) {
+          if (this.playing && this.songReady) {
             // 这个时候有可能用户已经播放了歌曲，要切到对应位置
             const currentTime = this.currentSong.duration * this.percent * 1000
             this.currentLyric.seek(currentTime)
