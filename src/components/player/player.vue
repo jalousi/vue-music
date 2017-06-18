@@ -40,6 +40,9 @@
                    :class="{'current': currentLineNum ===index}"
                    v-for="(line,index) in currentLyric.lines">{{line.txt}}</p>
               </div>
+              <div class="pure-music" v-show="isPureMusic">
+                <p>{{pureMusicLyric}}</p>
+              </div>
             </div>
           </scroll>
         </div>
@@ -115,6 +118,8 @@
   const transform = prefixStyle('transform')
   const transitionDuration = prefixStyle('transitionDuration')
 
+  const timeExp = /\[(\d{2}):(\d{2}):(\d{2})]/g
+
   export default {
     mixins: [playerMixin],
     data() {
@@ -125,7 +130,9 @@
         currentLyric: null,
         currentLineNum: 0,
         currentShow: 'cd',
-        playingLyric: ''
+        playingLyric: '',
+        isPureMusic: false,
+        pureMusicLyric: ''
       }
     },
     computed: {
@@ -264,7 +271,7 @@
         this.songReady = true
         this.savePlayHistory(this.currentSong)
         // 如果歌曲的播放晚于歌词的出现，播放的时候需要同步歌词
-        if (this.currentLyric) {
+        if (this.currentLyric && !this.isPureMusic) {
           const currentTime = this.currentSong.duration * this.percent * 1000
           this.currentLyric.seek(currentTime)
         }
@@ -297,10 +304,16 @@
             return
           }
           this.currentLyric = new Lyric(lyric, this.handleLyric)
-          if (this.playing && this.songReady) {
-            // 这个时候有可能用户已经播放了歌曲，要切到对应位置
-            const currentTime = this.currentSong.duration * this.percent * 1000
-            this.currentLyric.seek(currentTime)
+          this.isPureMusic = !this.currentLyric.lines.length
+          if (this.isPureMusic) {
+            this.pureMusicLyric = this.currentLyric.lrc.replace(timeExp, '').trim()
+            this.playingLyric = this.pureMusicLyric
+          } else {
+            if (this.playing && this.songReady) {
+              // 这个时候有可能用户已经播放了歌曲，要切到对应位置
+              const currentTime = this.currentSong.duration * this.percent * 1000
+              this.currentLyric.seek(currentTime)
+            }
           }
         }).catch(() => {
           this.currentLyric = null
@@ -575,6 +588,11 @@
               font-size: $font-size-medium
               &.current
                 color: $color-text
+            .pure-music
+              padding-top: 50%
+              line-height: 32px
+              color: $color-text-l
+              font-size: $font-size-medium
       .bottom
         position: absolute
         bottom: 50px
