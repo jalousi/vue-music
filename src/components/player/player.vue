@@ -217,6 +217,7 @@
         }
       },
       end() {
+        this.currentTime = 0
         if (this.mode === playMode.loop) {
           this.loop()
         } else {
@@ -272,8 +273,7 @@
         this.savePlayHistory(this.currentSong)
         // 如果歌曲的播放晚于歌词的出现，播放的时候需要同步歌词
         if (this.currentLyric && !this.isPureMusic) {
-          const currentTime = this.currentSong.duration * this.percent * 1000
-          this.currentLyric.seek(currentTime)
+          this.currentLyric.seek(this.currentTime * 1000)
         }
       },
       error() {
@@ -311,11 +311,11 @@
           } else {
             if (this.playing && this.songReady) {
               // 这个时候有可能用户已经播放了歌曲，要切到对应位置
-              const currentTime = this.currentSong.duration * this.percent * 1000
-              this.currentLyric.seek(currentTime)
+              this.currentLyric.seek(this.currentTime * 1000)
             }
           }
-        }).catch(() => {
+        }).catch((e) => {
+          console.log(e)
           this.currentLyric = null
           this.playingLyric = ''
           this.currentLineNum = 0
