@@ -314,14 +314,16 @@
               this.currentLyric.seek(this.currentTime * 1000)
             }
           }
-        }).catch((e) => {
-          console.log(e)
+        }).catch(() => {
           this.currentLyric = null
           this.playingLyric = ''
           this.currentLineNum = 0
         })
       },
       handleLyric({lineNum, txt}) {
+        if (!this.$refs.lyricLine) {
+          return
+        }
         this.currentLineNum = lineNum
         if (lineNum > 5) {
           let lineEl = this.$refs.lyricLine[lineNum - 5]
