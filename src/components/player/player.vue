@@ -54,7 +54,8 @@
           <div class="progress-wrapper">
             <span class="time time-l">{{format(currentTime)}}</span>
             <div class="progress-bar-wrapper">
-              <progress-bar :percent="percent" @percentChange="onProgressBarChange" @percentChanging="onProgressBarChanging"></progress-bar>
+              <progress-bar :percent="percent" @percentChange="onProgressBarChange"
+                            @percentChanging="onProgressBarChanging"></progress-bar>
             </div>
             <span class="time time-r">{{format(currentSong.duration)}}</span>
           </div>
@@ -289,13 +290,17 @@
         return `${minute}:${second}`
       },
       onProgressBarChanging (percent) {
-        this._handleProgressBarChange(percent)
-        if (this.playing) {
-          this.togglePlaying()
+        this.currentTime = this.currentSong.duration * percent
+        if (this.currentLyric) {
+          this.currentLyric.seek(this.currentTime * 1000)
         }
       },
       onProgressBarChange(percent) {
-        this._handleProgressBarChange(percent)
+        const currentTime = this.currentSong.duration * percent
+        this.$refs.audio.currentTime = currentTime
+        if (this.currentLyric) {
+          this.currentLyric.seek(currentTime * 1000)
+        }
         if (!this.playing) {
           this.togglePlaying()
         }
@@ -420,13 +425,6 @@
           x,
           y,
           scale
-        }
-      },
-      _handleProgressBarChange (percent) {
-        const currentTime = this.currentSong.duration * percent
-        this.$refs.audio.currentTime = currentTime
-        if (this.currentLyric) {
-          this.currentLyric.seek(currentTime * 1000)
         }
       },
       ...mapMutations({
