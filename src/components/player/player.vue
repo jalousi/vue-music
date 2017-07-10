@@ -297,7 +297,7 @@
       },
       onProgressBarChange(percent) {
         const currentTime = this.currentSong.duration * percent
-        this.$refs.audio.currentTime = currentTime
+        this.currentTime = this.$refs.audio.currentTime = currentTime
         if (this.currentLyric) {
           this.currentLyric.seek(currentTime * 1000)
         }
