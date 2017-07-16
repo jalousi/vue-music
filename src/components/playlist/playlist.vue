@@ -101,10 +101,17 @@
         this.$refs.listContent.scrollToElement(this.$refs.list.$el.children[index], 300)
       },
       deleteOne(item) {
+        if (item.deleting) {
+          return
+        }
+        item.deleting = true
         this.deleteSong(item)
         if (!this.playlist.length) {
           this.hide()
         }
+        setTimeout(() => {
+          item.deleting = false
+        }, 300)
       },
       addSong() {
         this.$refs.addSong.show()
