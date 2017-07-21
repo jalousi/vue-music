@@ -54,7 +54,7 @@
           <div class="progress-wrapper">
             <span class="time time-l">{{format(currentTime)}}</span>
             <div class="progress-bar-wrapper">
-              <progress-bar :percent="percent" @percentChange="onProgressBarChange"
+              <progress-bar ref="progressBar" :percent="percent" @percentChange="onProgressBarChange"
                             @percentChanging="onProgressBarChanging"></progress-bar>
             </div>
             <span class="time time-r">{{format(currentSong.duration)}}</span>
@@ -470,6 +470,7 @@
         if (newVal) {
           setTimeout(() => {
             this.$refs.lyricList.refresh()
+            this.$refs.progressBar.setProgressOffset(this.percent)
           }, 20)
         }
       }
