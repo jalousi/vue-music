@@ -202,7 +202,11 @@
         this.$refs.cdWrapper.style.transition = 'all 0.4s'
         const {x, y, scale} = this._getPosAndScale()
         this.$refs.cdWrapper.style[transform] = `translate3d(${x}px,${y}px,0) scale(${scale})`
-        this.$refs.cdWrapper.addEventListener('transitionend', done)
+        const timer = setTimeout(done, 400)
+        this.$refs.cdWrapper.addEventListener('transitionend', () => {
+          clearTimeout(timer)
+          done()
+        })
       },
       afterLeave() {
         this.$refs.cdWrapper.style.transition = ''
