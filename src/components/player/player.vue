@@ -146,7 +146,7 @@
           // 处理全屏时,暂停后,中间歌曲图片的样式
           this.removeAnimationWhenPause('imageWrapper', 'image')
           // 处理非全屏时，暂停后,左下角歌曲图片的样式
-          // this.removeAnimationWhenPause('miniWrapper', 'miniImage')
+          this.removeAnimationWhenPause('miniWrapper', 'miniImage')
           return 'play-pause'
         }
       },
@@ -444,9 +444,7 @@
       removeAnimationWhenPause (imgContainerRefsName, imgRefsName) {
         if (!this.$refs[imgContainerRefsName]) return
         let imageWrapper = this.$refs[imgContainerRefsName]
-        console.log(imageWrapper)
         let image = this.$refs[imgRefsName]
-        console.log(image)
         let wTransform = getComputedStyle(imageWrapper).transform
         let iTransform = getComputedStyle(image).transform
         imageWrapper.style.transform = wTransform === 'none'
