@@ -147,7 +147,6 @@
           this.removeAnimationWhenPause('imageWrapper', 'image')
           // 处理非全屏时，暂停后,左下角歌曲图片的样式
           this.removeAnimationWhenPause('miniWrapper', 'miniImage')
-          return 'play-pause'
         }
       },
       playIcon() {
@@ -590,6 +589,7 @@
                 height: 100%
                 box-sizing: border-box
                 border-radius: 50%
+                border: 10px solid rgba(255,255,255,0.1)
               .play
                 animation: rotate 20s linear infinite
               .pause
