@@ -444,9 +444,9 @@
         if (!this.$refs[imgContainerRefsName]) return
         let imageWrapper = this.$refs[imgContainerRefsName]
         let image = this.$refs[imgRefsName]
-        let wTransform = getComputedStyle(imageWrapper).transform
-        let iTransform = getComputedStyle(image).transform
-        imageWrapper.style.transform = wTransform === 'none'
+        let wTransform = getComputedStyle(imageWrapper)[transform]
+        let iTransform = getComputedStyle(image)[transform]
+        imageWrapper.style[transform] = wTransform === 'none'
           ? iTransform
           : iTransform.concat(' ', wTransform)
       },
