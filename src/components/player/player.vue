@@ -24,8 +24,8 @@
         >
           <div class="middle-l" ref="middleL">
             <div class="cd-wrapper" ref="cdWrapper">
-              <div class="cd" :class="cdCls">
-                <img class="image" :src="currentSong.image">
+              <div class="cd"  ref="imageWrapper">
+                <img ref="image" :class="cdCls" class="image" :src="currentSong.image">
               </div>
             </div>
             <div class="playing-lyric-wrapper">
@@ -67,7 +67,7 @@
               <i @click="prev" class="icon-prev"></i>
             </div>
             <div class="icon i-center" :class="disableCls">
-              <i @click="togglePlaying" :class="playIcon"></i>
+              <i class="needsclick" @click="togglePlaying" :class="playIcon"></i>
             </div>
             <div class="icon i-right" :class="disableCls">
               <i @click="next" class="icon-next"></i>
@@ -81,8 +81,10 @@
     </transition>
     <transition name="mini">
       <div class="mini-player" v-show="!fullScreen" @click="open">
-        <div class="icon">
-          <img :class="cdCls" width="40" height="40" :src="currentSong.image">
+        <div class="icon" >
+          <div class="imgWrapper" ref="miniWrapper">
+            <img ref="miniImage" :class="cdCls" width="40" height="40" :src="currentSong.image">
+          </div>
         </div>
         <div class="text">
           <h2 class="name" v-html="currentSong.name"></h2>
@@ -138,7 +140,14 @@
     },
     computed: {
       cdCls() {
-        return this.playing ? 'play' : 'play pause'
+        if (this.playing) {
+          return 'play'
+        } else {
+          // 处理全屏时,暂停后,中间歌曲图片的样式
+          this.removeAnimationWhenPause('imageWrapper', 'image')
+          // 处理非全屏时，暂停后,左下角歌曲图片的样式
+          this.removeAnimationWhenPause('miniWrapper', 'miniImage')
+        }
       },
       playIcon() {
         return this.playing ? 'icon-pause' : 'icon-play'
@@ -431,6 +440,16 @@
           scale
         }
       },
+      removeAnimationWhenPause (imgContainerRefsName, imgRefsName) {
+        if (!this.$refs[imgContainerRefsName]) return
+        let imageWrapper = this.$refs[imgContainerRefsName]
+        let image = this.$refs[imgRefsName]
+        let wTransform = getComputedStyle(imageWrapper)[transform]
+        let iTransform = getComputedStyle(image)[transform]
+        imageWrapper.style[transform] = wTransform === 'none'
+          ? iTransform
+          : iTransform.concat(' ', wTransform)
+      },
       ...mapMutations({
         setFullScreen: 'SET_FULL_SCREEN'
       }),
@@ -556,25 +575,25 @@
             left: 10%
             top: 0
             width: 80%
+            box-sizing: border-box
             height: 100%
             .cd
               width: 100%
               height: 100%
-              box-sizing: border-box
-              border: 10px solid rgba(255, 255, 255, 0.1)
               border-radius: 50%
-              &.play
-                animation: rotate 20s linear infinite
-              &.pause
-                animation-play-state: paused
               .image
                 position: absolute
                 left: 0
                 top: 0
                 width: 100%
                 height: 100%
+                box-sizing: border-box
                 border-radius: 50%
-
+                border: 10px solid rgba(255,255,255,0.1)
+              .play
+                animation: rotate 20s linear infinite
+              .pause
+                animation-play-state: paused
           .playing-lyric-wrapper
             width: 80%
             margin: 30px auto 0 auto
@@ -692,13 +711,17 @@
       .icon
         flex: 0 0 40px
         width: 40px
+        height: 40px
         padding: 0 10px 0 20px
-        img
-          border-radius: 50%
-          &.play
-            animation: rotate 10s linear infinite
-          &.pause
-            animation-play-state: paused
+        .imgWrapper
+          height: 100%
+          width: 100%
+          img
+            border-radius: 50%
+            &.play
+              animation: rotate 10s linear infinite
+            &.pause
+              animation-play-state: paused
       .text
         display: flex
         flex-direction: column
