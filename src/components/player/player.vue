@@ -24,7 +24,7 @@
         >
           <div class="middle-l" ref="middleL">
             <div class="cd-wrapper" ref="cdWrapper">
-              <div class="cd"  ref="imageWrapper">
+              <div class="cd" ref="imageWrapper">
                 <img ref="image" :class="cdCls" class="image" :src="currentSong.image">
               </div>
             </div>
@@ -81,7 +81,7 @@
     </transition>
     <transition name="mini">
       <div class="mini-player" v-show="!fullScreen" @click="open">
-        <div class="icon" >
+        <div class="icon">
           <div class="imgWrapper" ref="miniWrapper">
             <img ref="miniImage" :class="cdCls" width="40" height="40" :src="currentSong.image">
           </div>
@@ -140,14 +140,7 @@
     },
     computed: {
       cdCls() {
-        if (this.playing) {
-          return 'play'
-        } else {
-          // 处理全屏时,暂停后,中间歌曲图片的样式
-          this.removeAnimationWhenPause('imageWrapper', 'image')
-          // 处理非全屏时，暂停后,左下角歌曲图片的样式
-          this.removeAnimationWhenPause('miniWrapper', 'miniImage')
-        }
+        return this.playing ? 'play' : ''
       },
       playIcon() {
         return this.playing ? 'icon-pause' : 'icon-play'
@@ -440,15 +433,20 @@
           scale
         }
       },
-      removeAnimationWhenPause (imgContainerRefsName, imgRefsName) {
-        if (!this.$refs[imgContainerRefsName]) return
-        let imageWrapper = this.$refs[imgContainerRefsName]
-        let image = this.$refs[imgRefsName]
+      /**
+       * 计算内层Image的transform，并同步到外层容器
+       * @param wrapper
+       * @param inner
+       */
+      syncWrapperTransform (wrapper, inner) {
+        if (!this.$refs[wrapper]) {
+          return
+        }
+        let imageWrapper = this.$refs[wrapper]
+        let image = this.$refs[inner]
         let wTransform = getComputedStyle(imageWrapper)[transform]
         let iTransform = getComputedStyle(image)[transform]
-        imageWrapper.style[transform] = wTransform === 'none'
-          ? iTransform
-          : iTransform.concat(' ', wTransform)
+        imageWrapper.style[transform] = wTransform === 'none' ? iTransform : iTransform.concat(' ', wTransform)
       },
       ...mapMutations({
         setFullScreen: 'SET_FULL_SCREEN'
@@ -488,6 +486,13 @@
         this.$nextTick(() => {
           newPlaying ? audio.play() : audio.pause()
         })
+        if (!newPlaying) {
+          if (this.fullScreen) {
+            this.syncWrapperTransform('imageWrapper', 'image')
+          } else {
+            this.syncWrapperTransform('miniWrapper', 'miniImage')
+          }
+        }
       },
       fullScreen(newVal) {
         if (newVal) {
@@ -589,11 +594,9 @@
                 height: 100%
                 box-sizing: border-box
                 border-radius: 50%
-                border: 10px solid rgba(255,255,255,0.1)
+                border: 10px solid rgba(255, 255, 255, 0.1)
               .play
                 animation: rotate 20s linear infinite
-              .pause
-                animation-play-state: paused
           .playing-lyric-wrapper
             width: 80%
             margin: 30px auto 0 auto
