@@ -102,7 +102,7 @@
     </transition>
     <playlist ref="playlist"></playlist>
     <audio ref="audio" :src="currentSong.url" @play="ready" @error="error" @timeupdate="updateTime"
-           @ended="end"></audio>
+           @ended="end" @pause="paused"></audio>
   </div>
 </template>
 
@@ -281,6 +281,13 @@
         // 如果歌曲的播放晚于歌词的出现，播放的时候需要同步歌词
         if (this.currentLyric && !this.isPureMusic) {
           this.currentLyric.seek(this.currentTime * 1000)
+        }
+      },
+      paused() {
+        this.setPlaying(false)
+        if (this.currentLyric) {
+          this.currentLyric.seek(this.currentTime * 1000)
+          this.currentLyric.togglePlay()
         }
       },
       error() {
