@@ -284,10 +284,9 @@
         }
       },
       paused() {
-        this.setPlaying(false)
+        this.setPlayingState(false)
         if (this.currentLyric) {
-          this.currentLyric.seek(this.currentTime * 1000)
-          this.currentLyric.togglePlay()
+          this.currentLyric.stop()
         }
       },
       error() {
