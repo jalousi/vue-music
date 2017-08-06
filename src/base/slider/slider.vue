@@ -65,6 +65,15 @@
       })
     },
     activated() {
+      let pageIndex = this.slider.getCurrentPage().pageX
+      if (pageIndex > this.dots.length) {
+        pageIndex = pageIndex % this.dots.length
+      }
+      this.slider.goToPage(pageIndex, 0, 0)
+      if (this.loop) {
+        pageIndex -= 1
+      }
+      this.currentPageIndex = pageIndex
       if (this.autoPlay) {
         this._play()
       }
@@ -136,10 +145,7 @@
         this.dots = new Array(this.children.length)
       },
       _play() {
-        let pageIndex = this.currentPageIndex + 1
-        if (this.loop) {
-          pageIndex += 1
-        }
+        let pageIndex = this.slider.getCurrentPage().pageX + 1
         clearTimeout(this.timer)
         this.timer = setTimeout(() => {
           this.slider.goToPage(pageIndex, 0, 400)
