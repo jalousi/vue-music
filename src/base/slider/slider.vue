@@ -48,7 +48,7 @@
       }, 20)
 
       window.addEventListener('resize', () => {
-        if (!this.slider) {
+        if (!this.slider || !this.slider.enabled) {
           return
         }
         clearTimeout(this.resizeTimer)
@@ -65,6 +65,7 @@
       })
     },
     activated() {
+      this.slider.enable()
       let pageIndex = this.slider.getCurrentPage().pageX
       if (pageIndex > this.dots.length) {
         pageIndex = pageIndex % this.dots.length
@@ -79,9 +80,11 @@
       }
     },
     deactivated() {
+      this.slider.disable()
       clearTimeout(this.timer)
     },
     beforeDestroy() {
+      this.slider.disable()
       clearTimeout(this.timer)
     },
     methods: {
