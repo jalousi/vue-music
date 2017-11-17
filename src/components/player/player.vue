@@ -107,15 +107,15 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {mapGetters, mapMutations, mapActions} from 'vuex'
+  import { mapGetters, mapMutations, mapActions } from 'vuex'
   import animations from 'create-keyframe-animation'
-  import {prefixStyle} from 'common/js/dom'
+  import { prefixStyle } from 'common/js/dom'
   import ProgressBar from 'base/progress-bar/progress-bar'
   import ProgressCircle from 'base/progress-circle/progress-circle'
-  import {playMode} from 'common/js/config'
+  import { playMode } from 'common/js/config'
   import Lyric from 'lyric-parser'
   import Scroll from 'base/scroll/scroll'
-  import {playerMixin} from 'common/js/mixin'
+  import { playerMixin } from 'common/js/mixin'
   import Playlist from 'components/playlist/playlist'
 
   const transform = prefixStyle('transform')
@@ -462,27 +462,30 @@
       ])
     },
     watch: {
-      currentSong(newSong, oldSong) {
-        if (!newSong.id) {
-          return
-        }
-        if (newSong.id === oldSong.id) {
-          return
-        }
-        this.songReady = false
-        if (this.currentLyric) {
-          this.currentLyric.stop()
-          // 重置为null
-          this.currentLyric = null
-          this.currentTime = 0
-          this.playingLyric = ''
-          this.currentLineNum = 0
-        }
-        clearTimeout(this.timer)
-        this.timer = setTimeout(() => {
-          this.$refs.audio.play()
-          this.getLyric()
-        }, 1000)
+      currentSong: {
+        handler(newSong, oldSong) {
+          if (!newSong.id) {
+            return
+          }
+          if (newSong.id === oldSong.id) {
+            return
+          }
+          this.songReady = false
+          if (this.currentLyric) {
+            this.currentLyric.stop()
+            // 重置为null
+            this.currentLyric = null
+            this.currentTime = 0
+            this.playingLyric = ''
+            this.currentLineNum = 0
+          }
+          clearTimeout(this.timer)
+          this.timer = setTimeout(() => {
+            this.$refs.audio.play()
+            this.getLyric()
+          }, 800)
+        },
+        sync: true
       },
       playing(newPlaying) {
         if (!this.songReady) {
