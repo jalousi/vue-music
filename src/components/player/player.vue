@@ -101,7 +101,7 @@
       </div>
     </transition>
     <playlist ref="playlist"></playlist>
-    <audio ref="audio" :src="currentSong.url" @play="ready" @error="error" @timeupdate="updateTime"
+    <audio ref="audio" @play="ready" @error="error" @timeupdate="updateTime"
            @ended="end" @pause="paused"></audio>
   </div>
 </template>
@@ -276,7 +276,10 @@
         }
       },
       ready() {
-        this.songReady = true
+        // 延时避免快速切换歌曲导致 DOM 会报错
+        setTimeout(() => {
+          this.songReady = true
+        }, 500)
         this.savePlayHistory(this.currentSong)
         // 如果歌曲的播放晚于歌词的出现，播放的时候需要同步歌词
         if (this.currentLyric && !this.isPureMusic) {
@@ -463,7 +466,7 @@
     },
     watch: {
       currentSong(newSong, oldSong) {
-        if (!newSong.id || newSong.id === oldSong.id) {
+        if (!newSong.id || !newSong.url || newSong.id === oldSong.id) {
           return
         }
         this.songReady = false
@@ -475,11 +478,9 @@
           this.playingLyric = ''
           this.currentLineNum = 0
         }
-        clearTimeout(this.timer)
-        this.timer = setTimeout(() => {
-          this.$refs.audio.play()
-          this.getLyric()
-        }, 800)
+        this.$refs.audio.src = newSong.url
+        this.$refs.audio.play()
+        this.getLyric()
       },
       playing(newPlaying) {
         if (!this.songReady) {
