@@ -462,30 +462,24 @@
       ])
     },
     watch: {
-      currentSong: {
-        handler(newSong, oldSong) {
-          if (!newSong.id) {
-            return
-          }
-          if (newSong.id === oldSong.id) {
-            return
-          }
-          this.songReady = false
-          if (this.currentLyric) {
-            this.currentLyric.stop()
-            // 重置为null
-            this.currentLyric = null
-            this.currentTime = 0
-            this.playingLyric = ''
-            this.currentLineNum = 0
-          }
-          clearTimeout(this.timer)
-          this.timer = setTimeout(() => {
-            this.$refs.audio.play()
-            this.getLyric()
-          }, 800)
-        },
-        sync: true
+      currentSong(newSong, oldSong) {
+        if (!newSong.id || newSong.id === oldSong.id) {
+          return
+        }
+        this.songReady = false
+        if (this.currentLyric) {
+          this.currentLyric.stop()
+          // 重置为null
+          this.currentLyric = null
+          this.currentTime = 0
+          this.playingLyric = ''
+          this.currentLineNum = 0
+        }
+        clearTimeout(this.timer)
+        this.timer = setTimeout(() => {
+          this.$refs.audio.play()
+          this.getLyric()
+        }, 800)
       },
       playing(newPlaying) {
         if (!this.songReady) {
