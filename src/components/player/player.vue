@@ -331,7 +331,7 @@
             this.pureMusicLyric = this.currentLyric.lrc.replace(timeExp, '').trim()
             this.playingLyric = this.pureMusicLyric
           } else {
-            if (this.playing && this.songReady) {
+            if (this.playing) {
               // 这个时候有可能用户已经播放了歌曲，要切到对应位置
               this.currentLyric.seek(this.currentTime * 1000)
             }
