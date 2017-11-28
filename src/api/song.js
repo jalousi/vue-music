@@ -1,7 +1,7 @@
 import { commonParams, options } from './config'
 import axios from 'axios'
 import jsonp from 'common/js/jsonp'
-import { getUid }  from 'common/js/uid'
+import { getUid } from 'common/js/uid'
 
 const debug = process.env.NODE_ENV !== 'production'
 
@@ -41,6 +41,6 @@ export function getVKey(songmid, filename) {
   })
 
   return jsonp(url, data, Object.assign({}, options, {
-    param: 'callback',
+    param: 'callback'
   }))
 }
