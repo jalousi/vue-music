@@ -28,10 +28,10 @@
   import Scroll from 'base/scroll/scroll'
   import Loading from 'base/loading/loading'
   import NoResult from 'base/no-result/no-result'
-  import {search} from 'api/search'
-  import {ERR_OK} from 'api/config'
-  import {createSong} from 'common/js/song'
-  import {mapMutations, mapActions} from 'vuex'
+  import { search } from 'api/search'
+  import { ERR_OK } from 'api/config'
+  import { createSong, isValidMusic } from 'common/js/song'
+  import { mapMutations, mapActions } from 'vuex'
   import Singer from 'common/js/singer'
 
   const TYPE_SINGER = 'singer'
@@ -129,7 +129,7 @@
       _normalizeSongs(list) {
         let ret = []
         list.forEach((musicData) => {
-          if (musicData.songid && musicData.albummid) {
+          if (isValidMusic(musicData)) {
             ret.push(createSong(musicData))
           }
         })

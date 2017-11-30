@@ -6,10 +6,10 @@
 
 <script type="text/ecmascript-6">
   import MusicList from 'components/music-list/music-list'
-  import {getMusicList} from 'api/rank'
-  import {ERR_OK} from 'api/config'
-  import {mapGetters} from 'vuex'
-  import {createSong} from 'common/js/song'
+  import { getMusicList } from 'api/rank'
+  import { ERR_OK } from 'api/config'
+  import { mapGetters } from 'vuex'
+  import { createSong, isValidMusic } from 'common/js/song'
 
   export default {
     computed: {
@@ -51,7 +51,7 @@
         let ret = []
         list.forEach((item) => {
           const musicData = item.data
-          if (musicData.songid && musicData.albummid) {
+          if (isValidMusic(musicData)) {
             ret.push(createSong(musicData))
           }
         })
