@@ -35,7 +35,6 @@
   import Scroll from 'base/scroll/scroll'
   import SongList from 'base/song-list/song-list'
   import NoResult from 'base/no-result/no-result'
-  import Song from 'common/js/song'
   import {mapGetters, mapActions} from 'vuex'
   import {playlistMixin} from 'common/js/mixin'
 
@@ -85,7 +84,7 @@
         this.currentIndex = index
       },
       selectSong(song) {
-        this.insertSong(new Song(song))
+        this.insertSong(song)
       },
       back() {
         this.$router.back()
@@ -95,9 +94,6 @@
         if (list.length === 0) {
           return
         }
-        list = list.map((song) => {
-          return new Song(song)
-        })
         this.randomPlay({
           list
         })
