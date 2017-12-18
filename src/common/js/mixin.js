@@ -37,7 +37,10 @@ export const playerMixin = {
       'currentSong',
       'mode',
       'favoriteList'
-    ])
+    ]),
+    favoriteIcon() {
+      return this.getFavoriteIcon(this.currentSong)
+    }
   },
   methods: {
     changeMode() {
