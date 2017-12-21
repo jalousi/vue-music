@@ -101,7 +101,7 @@
       </div>
     </transition>
     <playlist ref="playlist"></playlist>
-    <audio ref="audio" @play="ready" @error="error" @timeupdate="updateTime"
+    <audio ref="audio" @playing="ready" @error="error" @timeupdate="updateTime"
            @ended="end" @pause="paused"></audio>
   </div>
 </template>
@@ -276,10 +276,9 @@
         }
       },
       ready() {
-        // 延时避免快速切换歌曲导致 DOM 会报错
-        setTimeout(() => {
-          this.songReady = true
-        }, 500)
+        clearTimeout(this.timer)
+        // 监听 playing 这个事件可以确保慢网速或者快速切换歌曲导致的 DOM Exception
+        this.songReady = true
         this.canLyricPlay = true
         this.savePlayHistory(this.currentSong)
         // 如果歌曲的播放晚于歌词的出现，播放的时候需要同步歌词
@@ -294,6 +293,7 @@
         }
       },
       error() {
+        clearTimeout(this.timer)
         this.songReady = true
       },
       updateTime(e) {
@@ -482,6 +482,11 @@
         }
         this.$refs.audio.src = newSong.url
         this.$refs.audio.play()
+        // 若歌曲 5s 未播放，则认为超时，修改状态确保可以切换歌曲。
+        clearTimeout(this.timer)
+        this.timer = setTimeout(() => {
+          this.songReady = true
+        }, 5000)
         this.getLyric()
       },
       playing(newPlaying) {
