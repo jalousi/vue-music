@@ -5,6 +5,18 @@
 本源码非开源项目，仅仅用于 Vue 实战项目的学习，不可作为商业用途。
 希望同学们一起努力抵制盗版侵权行为，尽量不要把这个项目开源。
 
+最新的代码在 master，另外 `use-cube-ui` 分支是使用 cube-ui 对该项目做的重构，代码也会同步更新。遇到问题请先查看 issue，并且对比最新的源码，因为你遇到的大部分问题都可以在 issue 里看到，并且最新源码也都解决这些问题。
+
+老师基于这个项目写过 2 篇文章，感兴趣的同学也可以看看。
+
+- [Vue.js 升级踩坑小记](https://juejin.im/post/5a1af88f5188254a701ec230)
+
+解决 iOS 微信不能播放歌曲的问题。
+
+- [vue-music 音乐 App 之 cube-ui 重构](https://juejin.im/post/5a524117518825732c535fff)
+
+使用 cube-ui 重构该项目。
+
 [项目演示地址](http://ustbhuangyi.com/music/)
 
 ![二维码](http://qr.api.cli.im/qr?data=http%253A%252F%252Fustbhuangyi.com%252Fmusic&level=H&transparent=false&bgcolor=%23ffffff&forecolor=%23000000&blockpixel=12&marginblock=1&logourl=&size=280&kid=cliim&key=ab1f62311bfc4de5bc301283707c0328)
