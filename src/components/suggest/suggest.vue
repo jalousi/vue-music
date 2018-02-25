@@ -30,7 +30,7 @@
   import NoResult from 'base/no-result/no-result'
   import { search } from 'api/search'
   import { ERR_OK } from 'api/config'
-  import { createSong, isValidMusic } from 'common/js/song'
+  import { createSong, isValidMusic, processSongsUrl } from 'common/js/song'
   import { mapMutations, mapActions } from 'vuex'
   import Singer from 'common/js/singer'
 
@@ -67,7 +67,9 @@
         this.$refs.suggest.scrollTo(0, 0)
         search(this.query, this.page, this.showSinger, perpage).then((res) => {
           if (res.code === ERR_OK) {
-            this.result = this._genResult(res.data)
+            this._genResult(res.data).then((result) => {
+              this.result = result
+            })
             this._checkMore(res.data)
           }
         })
@@ -79,7 +81,9 @@
         this.page++
         search(this.query, this.page, this.showSinger, perpage).then((res) => {
           if (res.code === ERR_OK) {
-            this.result = this.result.concat(this._genResult(res.data))
+            this._genResult(res.data).then((result) => {
+              this.result = this.result.concat(result)
+            })
             this._checkMore(res.data)
           }
         })
@@ -121,10 +125,10 @@
         if (data.zhida && data.zhida.singerid && this.page === 1) {
           ret.push({...data.zhida, ...{type: TYPE_SINGER}})
         }
-        if (data.song) {
-          ret = ret.concat(this._normalizeSongs(data.song.list))
-        }
-        return ret
+        return processSongsUrl(this._normalizeSongs(data.song.list)).then((songs) => {
+          ret = ret.concat(songs)
+          return ret
+        })
       },
       _normalizeSongs(list) {
         let ret = []

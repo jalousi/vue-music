@@ -1,7 +1,7 @@
 import { commonParams, options } from './config'
-import axios from 'axios'
 import jsonp from 'common/js/jsonp'
 import { getUid } from 'common/js/uid'
+import axios from 'axios'
 
 const debug = process.env.NODE_ENV !== 'production'
 
@@ -25,22 +25,45 @@ export function getLyric(mid) {
   })
 }
 
-export function getVKey(songmid, filename) {
-  const url = 'https://c.y.qq.com/base/fcgi-bin/fcg_music_express_mobile3.fcg'
+export function getSongsUrl(songs) {
+  const url = debug ? '/api/getPurlUrl' : 'http://ustbhuangyi.com/music/api/getPurlUrl'
 
-  const data = Object.assign({}, commonParams, {
-    cid: 205361747,
-    format: 'json',
-    platform: 'yqq',
-    hostUin: 0,
-    needNewCode: 0,
-    uin: 0,
-    songmid,
-    filename,
-    guid: getUid()
+  let mids = []
+  let types = []
+
+  songs.forEach((song) => {
+    mids.push(song.mid)
+    types.push(0)
   })
 
-  return jsonp(url, data, Object.assign({}, options, {
-    param: 'callback'
-  }))
+  const data = Object.assign({}, commonParams, {
+    g_tk: 5381,
+    format: 'json',
+    platform: 'h5',
+    needNewCode: 1,
+    uin: 0
+  })
+
+  return axios.post(url, {
+    comm: data,
+    url_mid: genUrlMid(mids, types)
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+
+function genUrlMid(mids, types) {
+  const guid = getUid()
+  return {
+    module: 'vkey.GetVkeyServer',
+    method: "CgiGetVkey",
+    param: {
+      guid,
+      songmid: mids,
+      songtype: types,
+      uin: '0',
+      loginflag: 0,
+      platform: '23'
+    }
+  }
 }
