@@ -73,7 +73,7 @@ apiRoutes.get('/lyric', function (req, res) {
   })
 })
 
-apiRoutes.post('/api/getPurlUrl', bodyParser.json(), function (req, res) {
+app.post('/api/getPurlUrl', bodyParser.json(), function (req, res) {
   const url = 'https://u.y.qq.com/cgi-bin/musicu.fcg'
   axios.post(url, req.body, {
     headers: {
