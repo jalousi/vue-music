@@ -62,6 +62,9 @@ export function isValidMusic(musicData) {
 }
 
 export function processSongsUrl(songs) {
+  if (!songs.length) {
+    return Promise.resolve(songs)
+  }
   return getSongsUrl(songs).then((res) => {
     if (res.code === ERR_OK) {
       let midUrlInfo = res.url_mid.data.midurlinfo
