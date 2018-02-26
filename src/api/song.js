@@ -46,7 +46,7 @@ export function getSongsUrl(songs) {
     uin: 0
   })
 
-  return new Promise((reslove, reject) => {
+  return new Promise((resolve, reject) => {
     let tryTime = 3
 
     function request() {
@@ -60,7 +60,7 @@ export function getSongsUrl(songs) {
           if (urlMid && urlMid.code === ERR_OK) {
             const info = urlMid.data.midurlinfo[0]
             if (info && info.purl) {
-              reslove(res)
+              resolve(res)
             } else {
               retry()
             }
