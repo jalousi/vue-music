@@ -1,4 +1,4 @@
-import { getLyric, getVKey, getSongsUrl } from 'api/song'
+import { getLyric, getSongsUrl } from 'api/song'
 import { ERR_OK } from 'api/config'
 import { Base64 } from 'js-base64'
 
