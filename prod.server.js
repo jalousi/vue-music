@@ -48,7 +48,6 @@ apiRoutes.get('/getCdInfo', function (req, res) {
   })
 })
 
-
 apiRoutes.get('/lyric', function (req, res) {
   var url = 'https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg'
 
@@ -81,6 +80,21 @@ app.post('/api/getPurlUrl', bodyParser.json(), function (req, res) {
       origin: 'https://y.qq.com',
       'Content-type': 'application/x-www-form-urlencoded'
     }
+  }).then((response) => {
+    res.json(response.data)
+  }).catch((e) => {
+    console.log(e)
+  })
+})
+
+apiRoutes.get('/search', function (req, res) {
+  const url = 'https://c.y.qq.com/soso/fcgi-bin/search_for_qq_cp'
+  axios.get(url, {
+    headers: {
+      referer: 'https://c.y.qq.com/',
+      host: 'c.y.qq.com'
+    },
+    params: req.query
   }).then((response) => {
     res.json(response.data)
   }).catch((e) => {
