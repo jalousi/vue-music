@@ -36,10 +36,12 @@
 <script type="text/ecmascript-6">
   import Scroll from 'base/scroll/scroll'
   import Loading from 'base/loading/loading'
-  import {getData} from 'common/js/dom'
+  import {getData,prefixStyle} from 'common/js/dom'
 
   const TITLE_HEIGHT = 30
   const ANCHOR_HEIGHT = 18
+  
+  const transform = prefixStyle('transform')
 
   export default {
     props: {
@@ -156,7 +158,7 @@
           return
         }
         this.fixedTop = fixedTop
-        this.$refs.fixed.style.transform = `translate3d(0,${fixedTop}px,0)`
+        this.$refs.fixed.style[transform] = `translate3d(0,${fixedTop}px,0)`
       }
     },
     components: {
