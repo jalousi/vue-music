@@ -14,20 +14,20 @@
         default: 2000
       }
     },
-    data() {
+    data () {
       return {
         showFlag: false
       }
     },
     methods: {
-      show() {
+      show () {
         this.showFlag = true
         clearTimeout(this.timer)
         this.timer = setTimeout(() => {
           this.hide()
         }, this.delay)
       },
-      hide() {
+      hide () {
         this.showFlag = false
       }
     }

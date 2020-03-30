@@ -43,22 +43,27 @@
       direction: {
         type: String,
         default: DIRECTION_V
+      },
+      directionLockThreshold: {
+        type: Number,
+        default: 0
       }
     },
-    mounted() {
+    mounted () {
       setTimeout(() => {
         this._initScroll()
       }, 20)
     },
     methods: {
-      _initScroll() {
+      _initScroll () {
         if (!this.$refs.wrapper) {
           return
         }
         this.scroll = new BScroll(this.$refs.wrapper, {
           probeType: this.probeType,
           click: this.click,
-          eventPassthrough: this.direction === DIRECTION_V ? DIRECTION_H : DIRECTION_V
+          eventPassthrough: this.direction === DIRECTION_V ? DIRECTION_H : DIRECTION_V,
+          directionLockThreshold: this.directionLockThreshold
         })
 
         if (this.listenScroll) {
@@ -81,24 +86,24 @@
           })
         }
       },
-      disable() {
+      disable () {
         this.scroll && this.scroll.disable()
       },
-      enable() {
+      enable () {
         this.scroll && this.scroll.enable()
       },
-      refresh() {
+      refresh () {
         this.scroll && this.scroll.refresh()
       },
-      scrollTo() {
+      scrollTo () {
         this.scroll && this.scroll.scrollTo.apply(this.scroll, arguments)
       },
-      scrollToElement() {
+      scrollToElement () {
         this.scroll && this.scroll.scrollToElement.apply(this.scroll, arguments)
       }
     },
     watch: {
-      data() {
+      data () {
         setTimeout(() => {
           this.refresh()
         }, this.refreshDelay)

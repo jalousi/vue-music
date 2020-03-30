@@ -7,6 +7,21 @@
 
 最新的代码在 master，另外 `use-cube-ui` 分支是使用 cube-ui 对该项目做的重构，代码也会同步更新。遇到问题请先查看 issue，并且对比最新的源码，因为你遇到的大部分问题都可以在 issue 里看到，并且最新源码也都解决这些问题。
 
+必读 issue 列表：
+
+https://github.com/ustbhuangyi/vue-music/issues/166
+
+https://github.com/ustbhuangyi/vue-music/issues/164
+
+https://github.com/ustbhuangyi/vue-music/issues/136
+
+https://github.com/ustbhuangyi/vue-music/issues/111
+
+https://github.com/ustbhuangyi/vue-music/issues/114
+
+https://github.com/ustbhuangyi/vue-music/issues/77
+
+
 老师基于这个项目写过 2 篇文章，感兴趣的同学也可以看看。
 
 - [Vue.js 升级踩坑小记](https://juejin.im/post/5a1af88f5188254a701ec230)

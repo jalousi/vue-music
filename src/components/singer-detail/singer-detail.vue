@@ -1,5 +1,5 @@
 <template>
-  <transition name="slide">
+  <transition appear name="slide">
     <music-list :title="title" :bg-image="bgImage" :songs="songs"></music-list>
   </transition>
 </template>
@@ -13,26 +13,26 @@
 
   export default {
     computed: {
-      title() {
+      title () {
         return this.singer.name
       },
-      bgImage() {
+      bgImage () {
         return this.singer.avatar
       },
       ...mapGetters([
         'singer'
       ])
     },
-    data() {
+    data () {
       return {
         songs: []
       }
     },
-    created() {
+    created () {
       this._getDetail()
     },
     methods: {
-      _getDetail() {
+      _getDetail () {
         if (!this.singer.id) {
           this.$router.push('/singer')
           return
@@ -45,10 +45,10 @@
           }
         })
       },
-      _normalizeSongs(list) {
+      _normalizeSongs (list) {
         let ret = []
         list.forEach((item) => {
-          let {musicData} = item
+          let { musicData } = item
           if (isValidMusic(musicData)) {
             ret.push(createSong(musicData))
           }

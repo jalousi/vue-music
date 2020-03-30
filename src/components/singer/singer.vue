@@ -7,45 +7,45 @@
 
 <script type="text/ecmascript-6">
   import ListView from 'base/listview/listview'
-  import {getSingerList} from 'api/singer'
-  import {ERR_OK} from 'api/config'
+  import { getSingerList } from 'api/singer'
+  import { ERR_OK } from 'api/config'
   import Singer from 'common/js/singer'
-  import {mapMutations} from 'vuex'
-  import {playlistMixin} from 'common/js/mixin'
+  import { mapMutations } from 'vuex'
+  import { playlistMixin } from 'common/js/mixin'
 
   const HOT_SINGER_LEN = 10
   const HOT_NAME = '热门'
 
   export default {
     mixins: [playlistMixin],
-    data() {
+    data () {
       return {
         singers: []
       }
     },
-    created() {
+    created () {
       this._getSingerList()
     },
     methods: {
-      handlePlaylist(playlist) {
+      handlePlaylist (playlist) {
         const bottom = playlist.length > 0 ? '60px' : ''
         this.$refs.singer.style.bottom = bottom
         this.$refs.list.refresh()
       },
-      selectSinger(singer) {
+      selectSinger (singer) {
         this.$router.push({
           path: `/singer/${singer.id}`
         })
         this.setSinger(singer)
       },
-      _getSingerList() {
+      _getSingerList () {
         getSingerList().then((res) => {
           if (res.code === ERR_OK) {
             this.singers = this._normalizeSinger(res.data.list)
           }
         })
       },
-      _normalizeSinger(list) {
+      _normalizeSinger (list) {
         let map = {
           hot: {
             title: HOT_NAME,

@@ -1,15 +1,15 @@
 import * as types from './mutation-types'
-import {playMode} from 'common/js/config'
-import {shuffle} from 'common/js/util'
-import {saveSearch, clearSearch, deleteSearch, savePlay, saveFavorite, deleteFavorite} from 'common/js/cache'
+import { playMode } from 'common/js/config'
+import { shuffle } from 'common/js/util'
+import { saveSearch, clearSearch, deleteSearch, savePlay, saveFavorite, deleteFavorite } from 'common/js/cache'
 
-function findIndex(list, song) {
+function findIndex (list, song) {
   return list.findIndex((item) => {
     return item.id === song.id
   })
 }
 
-export const selectPlay = function ({commit, state}, {list, index}) {
+export const selectPlay = function ({ commit, state }, { list, index }) {
   commit(types.SET_SEQUENCE_LIST, list)
   if (state.mode === playMode.random) {
     let randomList = shuffle(list)
@@ -23,7 +23,7 @@ export const selectPlay = function ({commit, state}, {list, index}) {
   commit(types.SET_PLAYING_STATE, true)
 }
 
-export const randomPlay = function ({commit}, {list}) {
+export const randomPlay = function ({ commit }, { list }) {
   commit(types.SET_PLAY_MODE, playMode.random)
   commit(types.SET_SEQUENCE_LIST, list)
   let randomList = shuffle(list)
@@ -33,7 +33,7 @@ export const randomPlay = function ({commit}, {list}) {
   commit(types.SET_PLAYING_STATE, true)
 }
 
-export const insertSong = function ({commit, state}, song) {
+export const insertSong = function ({ commit, state }, song) {
   let playlist = state.playlist.slice()
   let sequenceList = state.sequenceList.slice()
   let currentIndex = state.currentIndex
@@ -77,19 +77,19 @@ export const insertSong = function ({commit, state}, song) {
   commit(types.SET_PLAYING_STATE, true)
 }
 
-export const saveSearchHistory = function ({commit}, query) {
+export const saveSearchHistory = function ({ commit }, query) {
   commit(types.SET_SEARCH_HISTORY, saveSearch(query))
 }
 
-export const deleteSearchHistory = function ({commit}, query) {
+export const deleteSearchHistory = function ({ commit }, query) {
   commit(types.SET_SEARCH_HISTORY, deleteSearch(query))
 }
 
-export const clearSearchHistory = function ({commit}) {
+export const clearSearchHistory = function ({ commit }) {
   commit(types.SET_SEARCH_HISTORY, clearSearch())
 }
 
-export const deleteSong = function ({commit, state}, song) {
+export const deleteSong = function ({ commit, state }, song) {
   let playlist = state.playlist.slice()
   let sequenceList = state.sequenceList.slice()
   let currentIndex = state.currentIndex
@@ -112,21 +112,21 @@ export const deleteSong = function ({commit, state}, song) {
   }
 }
 
-export const deleteSongList = function ({commit}) {
+export const deleteSongList = function ({ commit }) {
   commit(types.SET_CURRENT_INDEX, -1)
   commit(types.SET_PLAYLIST, [])
   commit(types.SET_SEQUENCE_LIST, [])
   commit(types.SET_PLAYING_STATE, false)
 }
 
-export const savePlayHistory = function ({commit}, song) {
+export const savePlayHistory = function ({ commit }, song) {
   commit(types.SET_PLAY_HISTORY, savePlay(song))
 }
 
-export const saveFavoriteList = function ({commit}, song) {
+export const saveFavoriteList = function ({ commit }, song) {
   commit(types.SET_FAVORITE_LIST, saveFavorite(song))
 }
 
-export const deleteFavoriteList = function ({commit}, song) {
+export const deleteFavoriteList = function ({ commit }, song) {
   commit(types.SET_FAVORITE_LIST, deleteFavorite(song))
 }

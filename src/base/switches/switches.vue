@@ -1,6 +1,6 @@
 <template>
   <ul class="switches">
-    <li class="switch-item" v-for="(item,index) in switches" :class="{'active':currentIndex === index}"
+    <li class="switch-item" v-for="(item,index) in switches" :class="{'active':currentIndex === index}" :key="index"
         @click="switchItem(index)">
       <span>{{item.name}} </span>
     </li>
@@ -12,7 +12,9 @@
     props: {
       switches: {
         type: Array,
-        default: []
+        default () {
+          return []
+        }
       },
       currentIndex: {
         type: Number,
@@ -20,7 +22,7 @@
       }
     },
     methods: {
-      switchItem(index) {
+      switchItem (index) {
         this.$emit('switch', index)
       }
     }

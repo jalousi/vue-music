@@ -9,7 +9,7 @@
           <div class="hot-key">
             <h1 class="title">热门搜索</h1>
             <ul>
-              <li @click="addQuery(item.k)" class="item" v-for="item in hotKey">
+              <li @click="addQuery(item.k)" class="item" v-for="(item,index) in hotKey" :key="index">
                 <span>{{item.k}}</span>
               </li>
             </ul>
@@ -40,28 +40,28 @@
   import Scroll from 'base/scroll/scroll'
   import Confirm from 'base/confirm/confirm'
   import Suggest from 'components/suggest/suggest'
-  import {getHotKey} from 'api/search'
-  import {ERR_OK} from 'api/config'
-  import {playlistMixin, searchMixin} from 'common/js/mixin'
-  import {mapActions} from 'vuex'
+  import { getHotKey } from 'api/search'
+  import { ERR_OK } from 'api/config'
+  import { playlistMixin, searchMixin } from 'common/js/mixin'
+  import { mapActions } from 'vuex'
 
   export default {
     mixins: [playlistMixin, searchMixin],
-    data() {
+    data () {
       return {
         hotKey: []
       }
     },
     computed: {
-      shortcut() {
+      shortcut () {
         return this.hotKey.concat(this.searchHistory)
       }
     },
-    created() {
+    created () {
       this._getHotKey()
     },
     methods: {
-      handlePlaylist(playlist) {
+      handlePlaylist (playlist) {
         const bottom = playlist.length > 0 ? '60px' : ''
 
         this.$refs.searchResult.style.bottom = bottom
@@ -70,10 +70,10 @@
         this.$refs.shortcutWrapper.style.bottom = bottom
         this.$refs.shortcut.refresh()
       },
-      showConfirm() {
+      showConfirm () {
         this.$refs.confirm.show()
       },
-      _getHotKey() {
+      _getHotKey () {
         getHotKey().then((res) => {
           if (res.code === ERR_OK) {
             this.hotKey = res.data.hotkey.slice(0, 10)
@@ -85,7 +85,7 @@
       ])
     },
     watch: {
-      query(newQuery) {
+      query (newQuery) {
         if (!newQuery) {
           setTimeout(() => {
             this.$refs.shortcut.refresh()

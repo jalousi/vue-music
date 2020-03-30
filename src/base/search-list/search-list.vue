@@ -16,14 +16,16 @@
     props: {
       searches: {
         type: Array,
-        default: []
+        default () {
+          return []
+        }
       }
     },
     methods: {
-      selectItem(item) {
+      selectItem (item) {
         this.$emit('select', item)
       },
-      deleteOne(item) {
+      deleteOne (item) {
         this.$emit('delete', item)
       }
     }

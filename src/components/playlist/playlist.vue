@@ -41,51 +41,51 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {mapActions} from 'vuex'
-  import {playMode} from 'common/js/config'
+  import { mapActions } from 'vuex'
+  import { playMode } from 'common/js/config'
   import Scroll from 'base/scroll/scroll'
   import Confirm from 'base/confirm/confirm'
   import AddSong from 'components/add-song/add-song'
-  import {playerMixin} from 'common/js/mixin'
+  import { playerMixin } from 'common/js/mixin'
 
   export default {
     mixins: [playerMixin],
-    data() {
+    data () {
       return {
         showFlag: false,
         refreshDelay: 120
       }
     },
     computed: {
-      modeText() {
+      modeText () {
         return this.mode === playMode.sequence ? '顺序播放' : this.mode === playMode.random ? '随机播放' : '单曲循环'
       }
     },
     methods: {
-      show() {
+      show () {
         this.showFlag = true
         setTimeout(() => {
           this.$refs.listContent.refresh()
           this.scrollToCurrent(this.currentSong)
         }, 20)
       },
-      hide() {
+      hide () {
         this.showFlag = false
       },
-      showConfirm() {
+      showConfirm () {
         this.$refs.confirm.show()
       },
-      confirmClear() {
+      confirmClear () {
         this.deleteSongList()
         this.hide()
       },
-      getCurrentIcon(item) {
+      getCurrentIcon (item) {
         if (this.currentSong.id === item.id) {
           return 'icon-play'
         }
         return ''
       },
-      selectItem(item, index) {
+      selectItem (item, index) {
         if (this.mode === playMode.random) {
           index = this.playlist.findIndex((song) => {
             return song.id === item.id
@@ -94,13 +94,13 @@
         this.setCurrentIndex(index)
         this.setPlayingState(true)
       },
-      scrollToCurrent(current) {
+      scrollToCurrent (current) {
         const index = this.sequenceList.findIndex((song) => {
           return current.id === song.id
         })
         this.$refs.listContent.scrollToElement(this.$refs.list.$el.children[index], 300)
       },
-      deleteOne(item) {
+      deleteOne (item) {
         if (item.deleting) {
           return
         }
@@ -113,7 +113,7 @@
           item.deleting = false
         }, 300)
       },
-      addSong() {
+      addSong () {
         this.$refs.addSong.show()
       },
       ...mapActions([
@@ -122,7 +122,7 @@
       ])
     },
     watch: {
-      currentSong(newSong, oldSong) {
+      currentSong (newSong, oldSong) {
         if (!this.showFlag || newSong.id === oldSong.id) {
           return
         }

@@ -3,7 +3,7 @@ import { ERR_OK } from 'api/config'
 import { Base64 } from 'js-base64'
 
 export default class Song {
-  constructor({id, mid, singer, name, album, duration, image, url}) {
+  constructor ({ id, mid, singer, name, album, duration, image, url }) {
     this.id = id
     this.mid = mid
     this.singer = singer
@@ -15,7 +15,7 @@ export default class Song {
     this.url = url
   }
 
-  getLyric() {
+  getLyric () {
     if (this.lyric) {
       return Promise.resolve(this.lyric)
     }
@@ -26,14 +26,14 @@ export default class Song {
           this.lyric = Base64.decode(res.lyric)
           resolve(this.lyric)
         } else {
-          reject('no lyric')
+          reject(new Error('no lyric'))
         }
       })
     })
   }
 }
 
-export function createSong(musicData) {
+export function createSong (musicData) {
   return new Song({
     id: musicData.songid,
     mid: musicData.songmid,
@@ -46,7 +46,7 @@ export function createSong(musicData) {
   })
 }
 
-function filterSinger(singer) {
+function filterSinger (singer) {
   let ret = []
   if (!singer) {
     return ''
@@ -57,18 +57,22 @@ function filterSinger(singer) {
   return ret.join('/')
 }
 
-export function isValidMusic(musicData) {
+export function isValidMusic (musicData) {
   return musicData.songid && musicData.albummid && (!musicData.pay || musicData.pay.payalbumprice === 0)
 }
 
-export function processSongsUrl(songs) {
+export function processSongsUrl (songs) {
   if (!songs.length) {
     return Promise.resolve(songs)
   }
-  return getSongsUrl(songs).then((midUrlInfo) => {
-    midUrlInfo.forEach((info, index) => {
-      let song = songs[index]
-      song.url = info.purl.indexOf('http') === -1 ? `http://dl.stream.qqmusic.qq.com/${info.purl}` : info.purl
+  return getSongsUrl(songs).then((purlMap) => {
+    songs = songs.filter((song) => {
+      const purl = purlMap[song.mid]
+      if (purl) {
+        song.url = purl.indexOf('http') === -1 ? `http://dl.stream.qqmusic.qq.com/${purl}` : purl
+        return true
+      }
+      return false
     })
     return songs
   })

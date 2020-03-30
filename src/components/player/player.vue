@@ -38,7 +38,9 @@
                 <p ref="lyricLine"
                    class="text"
                    :class="{'current': currentLineNum ===index}"
-                   v-for="(line,index) in currentLyric.lines">{{line.txt}}</p>
+                   v-for="(line,index) in currentLyric.lines"
+                   :key="index"
+                >{{line.txt}}</p>
               </div>
               <div class="pure-music" v-show="isPureMusic">
                 <p>{{pureMusicLyric}}</p>
@@ -125,7 +127,7 @@
 
   export default {
     mixins: [playerMixin],
-    data() {
+    data () {
       return {
         songReady: false,
         currentTime: 0,
@@ -139,19 +141,19 @@
       }
     },
     computed: {
-      cdCls() {
+      cdCls () {
         return this.playing ? 'play' : ''
       },
-      playIcon() {
+      playIcon () {
         return this.playing ? 'icon-pause' : 'icon-play'
       },
-      miniIcon() {
+      miniIcon () {
         return this.playing ? 'icon-pause-mini' : 'icon-play-mini'
       },
-      disableCls() {
+      disableCls () {
         return this.songReady ? '' : 'disable'
       },
-      percent() {
+      percent () {
         return this.currentTime / this.currentSong.duration
       },
       ...mapGetters([
@@ -160,18 +162,18 @@
         'playing'
       ])
     },
-    created() {
+    created () {
       this.touch = {}
     },
     methods: {
-      back() {
+      back () {
         this.setFullScreen(false)
       },
-      open() {
+      open () {
         this.setFullScreen(true)
       },
-      enter(el, done) {
-        const {x, y, scale} = this._getPosAndScale()
+      enter (el, done) {
+        const { x, y, scale } = this._getPosAndScale()
 
         let animation = {
           0: {
@@ -196,13 +198,13 @@
 
         animations.runAnimation(this.$refs.cdWrapper, 'move', done)
       },
-      afterEnter() {
+      afterEnter () {
         animations.unregisterAnimation('move')
         this.$refs.cdWrapper.style.animation = ''
       },
-      leave(el, done) {
+      leave (el, done) {
         this.$refs.cdWrapper.style.transition = 'all 0.4s'
-        const {x, y, scale} = this._getPosAndScale()
+        const { x, y, scale } = this._getPosAndScale()
         this.$refs.cdWrapper.style[transform] = `translate3d(${x}px,${y}px,0) scale(${scale})`
         const timer = setTimeout(done, 400)
         this.$refs.cdWrapper.addEventListener('transitionend', () => {
@@ -210,11 +212,11 @@
           done()
         })
       },
-      afterLeave() {
+      afterLeave () {
         this.$refs.cdWrapper.style.transition = ''
         this.$refs.cdWrapper.style[transform] = ''
       },
-      togglePlaying() {
+      togglePlaying () {
         if (!this.songReady) {
           return
         }
@@ -223,7 +225,7 @@
           this.currentLyric.togglePlay()
         }
       },
-      end() {
+      end () {
         this.currentTime = 0
         if (this.mode === playMode.loop) {
           this.loop()
@@ -231,7 +233,7 @@
           this.next()
         }
       },
-      loop() {
+      loop () {
         this.$refs.audio.currentTime = 0
         this.$refs.audio.play()
         this.setPlayingState(true)
@@ -239,13 +241,12 @@
           this.currentLyric.seek(0)
         }
       },
-      next() {
+      next () {
         if (!this.songReady) {
           return
         }
         if (this.playlist.length === 1) {
           this.loop()
-          return
         } else {
           let index = this.currentIndex + 1
           if (index === this.playlist.length) {
@@ -257,13 +258,12 @@
           }
         }
       },
-      prev() {
+      prev () {
         if (!this.songReady) {
           return
         }
         if (this.playlist.length === 1) {
           this.loop()
-          return
         } else {
           let index = this.currentIndex - 1
           if (index === -1) {
@@ -275,7 +275,7 @@
           }
         }
       },
-      ready() {
+      ready () {
         clearTimeout(this.timer)
         // 监听 playing 这个事件可以确保慢网速或者快速切换歌曲导致的 DOM Exception
         this.songReady = true
@@ -286,20 +286,20 @@
           this.currentLyric.seek(this.currentTime * 1000)
         }
       },
-      paused() {
+      paused () {
         this.setPlayingState(false)
         if (this.currentLyric) {
           this.currentLyric.stop()
         }
       },
-      error() {
+      error () {
         clearTimeout(this.timer)
         this.songReady = true
       },
-      updateTime(e) {
+      updateTime (e) {
         this.currentTime = e.target.currentTime
       },
-      format(interval) {
+      format (interval) {
         interval = interval | 0
         const minute = interval / 60 | 0
         const second = this._pad(interval % 60)
@@ -311,7 +311,7 @@
           this.currentLyric.seek(this.currentTime * 1000)
         }
       },
-      onProgressBarChange(percent) {
+      onProgressBarChange (percent) {
         const currentTime = this.currentSong.duration * percent
         this.currentTime = this.$refs.audio.currentTime = currentTime
         if (this.currentLyric) {
@@ -321,7 +321,7 @@
           this.togglePlaying()
         }
       },
-      getLyric() {
+      getLyric () {
         this.currentSong.getLyric().then((lyric) => {
           if (this.currentSong.lyric !== lyric) {
             return
@@ -343,7 +343,7 @@
           this.currentLineNum = 0
         })
       },
-      handleLyric({lineNum, txt}) {
+      handleLyric ({ lineNum, txt }) {
         if (!this.$refs.lyricLine) {
           return
         }
@@ -356,27 +356,41 @@
         }
         this.playingLyric = txt
       },
-      showPlaylist() {
+      showPlaylist () {
         this.$refs.playlist.show()
       },
-      middleTouchStart(e) {
+      middleTouchStart (e) {
         this.touch.initiated = true
+        this.touch.directionLocked = ''
         // 用来判断是否是一次移动
         this.touch.moved = false
         const touch = e.touches[0]
         this.touch.startX = touch.pageX
         this.touch.startY = touch.pageY
       },
-      middleTouchMove(e) {
+      middleTouchMove (e) {
         if (!this.touch.initiated) {
           return
         }
         const touch = e.touches[0]
         const deltaX = touch.pageX - this.touch.startX
         const deltaY = touch.pageY - this.touch.startY
-        if (Math.abs(deltaY) > Math.abs(deltaX)) {
+
+        const absDeltaX = Math.abs(deltaX)
+        const absDeltaY = Math.abs(deltaY)
+
+        if (!this.touch.directionLocked) {
+          if (absDeltaX > absDeltaY) {
+            this.touch.directionLocked = 'h' // lock horizontally
+          } else if (absDeltaY >= absDeltaX) {
+            this.touch.directionLocked = 'v' // lock vertically
+          }
+        }
+
+        if (this.touch.directionLocked === 'v') {
           return
         }
+
         if (!this.touch.moved) {
           this.touch.moved = true
         }
@@ -388,7 +402,7 @@
         this.$refs.middleL.style.opacity = 1 - this.touch.percent
         this.$refs.middleL.style[transitionDuration] = 0
       },
-      middleTouchEnd() {
+      middleTouchEnd () {
         if (!this.touch.moved) {
           return
         }
@@ -420,7 +434,7 @@
         this.$refs.middleL.style[transitionDuration] = `${time}ms`
         this.touch.initiated = false
       },
-      _pad(num, n = 2) {
+      _pad (num, n = 2) {
         let len = num.toString().length
         while (len < n) {
           num = '0' + num
@@ -428,7 +442,7 @@
         }
         return num
       },
-      _getPosAndScale() {
+      _getPosAndScale () {
         const targetWidth = 40
         const paddingLeft = 40
         const paddingBottom = 30
@@ -466,7 +480,7 @@
       ])
     },
     watch: {
-      currentSong(newSong, oldSong) {
+      currentSong (newSong, oldSong) {
         if (!newSong.id || !newSong.url || newSong.id === oldSong.id) {
           return
         }
@@ -489,7 +503,7 @@
         }, 5000)
         this.getLyric()
       },
-      playing(newPlaying) {
+      playing (newPlaying) {
         if (!this.songReady) {
           return
         }
@@ -505,7 +519,7 @@
           }
         }
       },
-      fullScreen(newVal) {
+      fullScreen (newVal) {
         if (newVal) {
           setTimeout(() => {
             this.$refs.lyricList.refresh()

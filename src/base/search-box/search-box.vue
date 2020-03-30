@@ -7,7 +7,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {debounce} from 'common/js/util'
+  import { debounce } from 'common/js/util'
 
   export default {
     props: {
@@ -16,23 +16,23 @@
         default: '搜索歌曲、歌手'
       }
     },
-    data() {
+    data () {
       return {
         query: ''
       }
     },
     methods: {
-      clear() {
+      clear () {
         this.query = ''
       },
-      setQuery(query) {
+      setQuery (query) {
         this.query = query
       },
-      blur() {
+      blur () {
         this.$refs.query.blur()
       }
     },
-    created() {
+    created () {
       this.$watch('query', debounce((newQuery) => {
         this.$emit('query', newQuery)
       }, 200))

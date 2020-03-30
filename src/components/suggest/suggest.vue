@@ -8,7 +8,7 @@
           @beforeScroll="listScroll"
   >
     <ul class="suggest-list">
-      <li @click="selectItem(item)" class="suggest-item" v-for="item in result">
+      <li @click="selectItem(item)" class="suggest-item" v-for="(item,index) in result" :key="index">
         <div class="icon">
           <i :class="getIconCls(item)"></i>
         </div>
@@ -48,33 +48,35 @@
         default: ''
       }
     },
-    data() {
+    data () {
       return {
         page: 1,
         pullup: true,
         beforeScroll: true,
-        hasMore: true,
+        hasMore: false,
         result: []
       }
     },
     methods: {
-      refresh() {
+      refresh () {
         this.$refs.suggest.refresh()
       },
-      search() {
+      search () {
         this.page = 1
-        this.hasMore = true
         this.$refs.suggest.scrollTo(0, 0)
+        this.hasMore = true
         search(this.query, this.page, this.showSinger, perpage).then((res) => {
           if (res.code === ERR_OK) {
             this._genResult(res.data).then((result) => {
               this.result = result
+              setTimeout(() => {
+                this._checkMore(res.data)
+              }, 20)
             })
-            this._checkMore(res.data)
           }
         })
       },
-      searchMore() {
+      searchMore () {
         if (!this.hasMore) {
           return
         }
@@ -83,15 +85,17 @@
           if (res.code === ERR_OK) {
             this._genResult(res.data).then((result) => {
               this.result = this.result.concat(result)
+              setTimeout(() => {
+                this._checkMore(res.data)
+              }, 20)
             })
-            this._checkMore(res.data)
           }
         })
       },
-      listScroll() {
+      listScroll () {
         this.$emit('listScroll')
       },
-      selectItem(item) {
+      selectItem (item) {
         if (item.type === TYPE_SINGER) {
           const singer = new Singer({
             id: item.singermid,
@@ -106,31 +110,31 @@
         }
         this.$emit('select', item)
       },
-      getDisplayName(item) {
+      getDisplayName (item) {
         if (item.type === TYPE_SINGER) {
           return item.singername
         } else {
           return `${item.name}-${item.singer}`
         }
       },
-      getIconCls(item) {
+      getIconCls (item) {
         if (item.type === TYPE_SINGER) {
           return 'icon-mine'
         } else {
           return 'icon-music'
         }
       },
-      _genResult(data) {
+      _genResult (data) {
         let ret = []
         if (data.zhida && data.zhida.singerid && this.page === 1) {
-          ret.push({...data.zhida, ...{type: TYPE_SINGER}})
+          ret.push({ ...data.zhida, ...{ type: TYPE_SINGER } })
         }
         return processSongsUrl(this._normalizeSongs(data.song.list)).then((songs) => {
           ret = ret.concat(songs)
           return ret
         })
       },
-      _normalizeSongs(list) {
+      _normalizeSongs (list) {
         let ret = []
         list.forEach((musicData) => {
           if (isValidMusic(musicData)) {
@@ -139,10 +143,14 @@
         })
         return ret
       },
-      _checkMore(data) {
+      _checkMore (data) {
         const song = data.song
         if (!song.list.length || (song.curnum + (song.curpage - 1) * perpage) >= song.totalnum) {
           this.hasMore = false
+        } else {
+          if (!this.$refs.suggest.scroll.hasVerticalScroll) {
+            this.searchMore()
+          }
         }
       },
       ...mapMutations({
@@ -153,7 +161,7 @@
       ])
     },
     watch: {
-      query(newQuery) {
+      query (newQuery) {
         if (!newQuery) {
           return
         }

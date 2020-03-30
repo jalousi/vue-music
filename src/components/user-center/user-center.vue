@@ -35,12 +35,12 @@
   import Scroll from 'base/scroll/scroll'
   import SongList from 'base/song-list/song-list'
   import NoResult from 'base/no-result/no-result'
-  import {mapGetters, mapActions} from 'vuex'
-  import {playlistMixin} from 'common/js/mixin'
+  import { mapGetters, mapActions } from 'vuex'
+  import { playlistMixin } from 'common/js/mixin'
 
   export default {
     mixins: [playlistMixin],
-    data() {
+    data () {
       return {
         currentIndex: 0,
         switches: [
@@ -54,14 +54,14 @@
       }
     },
     computed: {
-      noResult() {
+      noResult () {
         if (this.currentIndex === 0) {
           return !this.favoriteList.length
         } else {
           return !this.playHistory.length
         }
       },
-      noResultDesc() {
+      noResultDesc () {
         if (this.currentIndex === 0) {
           return '暂无收藏歌曲'
         } else {
@@ -74,22 +74,22 @@
       ])
     },
     methods: {
-      handlePlaylist(playlist) {
+      handlePlaylist (playlist) {
         const bottom = playlist.length > 0 ? '60px' : ''
         this.$refs.listWrapper.style.bottom = bottom
         this.$refs.favoriteList && this.$refs.favoriteList.refresh()
         this.$refs.playList && this.$refs.playList.refresh()
       },
-      switchItem(index) {
+      switchItem (index) {
         this.currentIndex = index
       },
-      selectSong(song) {
+      selectSong (song) {
         this.insertSong(song)
       },
-      back() {
+      back () {
         this.$router.back()
       },
-      random() {
+      random () {
         let list = this.currentIndex === 0 ? this.favoriteList : this.playHistory
         if (list.length === 0) {
           return

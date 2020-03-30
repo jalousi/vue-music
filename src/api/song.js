@@ -5,7 +5,7 @@ import { ERR_OK } from 'api/config'
 
 const debug = process.env.NODE_ENV !== 'production'
 
-export function getLyric(mid) {
+export function getLyric (mid) {
   const url = debug ? '/api/lyric' : 'http://ustbhuangyi.com/music/api/lyric'
 
   const data = Object.assign({}, commonParams, {
@@ -25,7 +25,7 @@ export function getLyric(mid) {
   })
 }
 
-export function getSongsUrl(songs) {
+export function getSongsUrl (songs) {
   const url = debug ? '/api/getPurlUrl' : 'http://ustbhuangyi.com/music/api/getPurlUrl'
 
   let mids = []
@@ -49,7 +49,7 @@ export function getSongsUrl(songs) {
   return new Promise((resolve, reject) => {
     let tryTime = 3
 
-    function request() {
+    function request () {
       return axios.post(url, {
         comm: data,
         req_0: urlMid
@@ -58,9 +58,14 @@ export function getSongsUrl(songs) {
         if (res.code === ERR_OK) {
           let urlMid = res.req_0
           if (urlMid && urlMid.code === ERR_OK) {
-            const info = urlMid.data.midurlinfo[0]
-            if (info && info.purl) {
-              resolve(urlMid.data.midurlinfo)
+            const purlMap = {}
+            urlMid.data.midurlinfo.forEach((item) => {
+              if (item.purl) {
+                purlMap[item.songmid] = item.purl
+              }
+            })
+            if (Object.keys(purlMap).length > 0) {
+              resolve(purlMap)
             } else {
               retry()
             }
@@ -73,7 +78,7 @@ export function getSongsUrl(songs) {
       })
     }
 
-    function retry() {
+    function retry () {
       if (--tryTime >= 0) {
         request()
       } else {
@@ -85,7 +90,7 @@ export function getSongsUrl(songs) {
   })
 }
 
-function genUrlMid(mids, types) {
+function genUrlMid (mids, types) {
   const guid = getUid()
   return {
     module: 'vkey.GetVkeyServer',

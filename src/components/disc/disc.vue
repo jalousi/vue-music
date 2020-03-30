@@ -1,5 +1,5 @@
 <template>
-  <transition name="slide">
+  <transition appear name="slide">
     <music-list :title="title" :bg-image="bgImage" :songs="songs"></music-list>
   </transition>
 </template>
@@ -13,26 +13,26 @@
 
   export default {
     computed: {
-      title() {
+      title () {
         return this.disc.dissname
       },
-      bgImage() {
+      bgImage () {
         return this.disc.imgurl
       },
       ...mapGetters([
         'disc'
       ])
     },
-    data() {
+    data () {
       return {
         songs: []
       }
     },
-    created() {
+    created () {
       this._getSongList()
     },
     methods: {
-      _getSongList() {
+      _getSongList () {
         if (!this.disc.dissid) {
           this.$router.push('/recommend')
           return
@@ -45,7 +45,7 @@
           }
         })
       },
-      _normalizeSongs(list) {
+      _normalizeSongs (list) {
         let ret = []
         list.forEach((musicData) => {
           if (isValidMusic(musicData)) {
